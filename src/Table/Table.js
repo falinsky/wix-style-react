@@ -2,13 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
 import omit from 'lodash/omit';
-import classNames from 'classnames';
 import s from './Table.scss';
 import DataTable from '../DataTable';
 import WixComponent from '../BaseComponents/WixComponent';
 import Checkbox from '../Checkbox';
-import styles from '../../src/Card/Header/Header.scss';
-import typography from '../Typography/Typography.scss';
 
 const BulkSelectionState = Object.freeze({
   CHECKED: 'checked',
@@ -106,34 +103,6 @@ export default class Table extends WixComponent {
       </div>);
   }
 
-  renderSelectionCounter(selectionCount) {
-    const {selectionCounterRenderer} = this.props;
-    return selectionCounterRenderer ?
-      (<div className={classNames(typography.t1, styles.container)} data-hook="table-selection-counter">
-        {selectionCounterRenderer(selectionCount)}
-      </div>) : null;
-  }
-
-  renderSelectionActions() {
-    const {selectionHeader} = this.props;
-    return selectionHeader ?
-      (<div className={s.actions}>
-        <div className={s.selectionHeader} data-hook="table-selection-header">
-          {typeof selectionHeader === 'function' ? selectionHeader(this.state.selection) : selectionHeader}
-        </div>
-      </div>) : null;
-  }
-
-  renderSelectionHeader(selectionCount) {
-    const {selectionHeader, selectionCounterRenderer} = this.props;
-
-    return (selectionHeader || selectionCounterRenderer) ? (
-      <div className={styles.header}>
-        {this.renderSelectionCounter(selectionCount)}
-        {this.renderSelectionActions()}
-      </div>) : null;
-  }
-
   shouldComponentUpdate() {
     // Table extends WixComponent which is a PureComponent, but Table is not pure.
     // returning true, disables the PureComponent optimization.
@@ -142,24 +111,20 @@ export default class Table extends WixComponent {
 
   render() {
     const {header, footer, showSelection, onSelectionChanged, columns} = this.props;
-    const selectionCount = this.getSelectionsCount(this.state.selections);
     const extendedColumns = showSelection ? [this.craeteCheckboxColumn(onSelectionChanged), ...columns] : columns;
 
     const dataTableProps = omit(this.props,
       'header',
       'footer',
-      'selectionHeader',
       'showSelection',
       'selections',
-      'selectionCounterRenderer',
       'onSelectionChanged',
       'columns',
       'dataHook');
 
     return (
       <div>
-        {header && !selectionCount && this.renderHeader()}
-        {!!selectionCount && this.renderSelectionHeader(selectionCount)}
+        {header && this.renderHeader()}
         <DataTable
           {...dataTableProps}
           dataHook="table"
@@ -188,12 +153,8 @@ Table.propTypes = {
   onSelectionChanged: PropTypes.func,
   /** The header that appear above the table's column titles. Can be a Node, or a function with this signature: (selection: Array[boolean])=>React.ReactNode */
   header: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
-  /** The header that appear above the table when there is selected rows. Can be a Node, or a function with this signature: (selection: Array[boolean])=>React.ReactNode */
-  selectionHeader: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
   /** The footer that appear below the table. Can be a Node, or a function with this signature: (selection: Array[boolean])=>React.ReactNode*/
-  footer: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
-  /** A function that receives the number of selected rows and returns string to dislpay */
-  selectionCounterRenderer: PropTypes.func
+  footer: PropTypes.oneOfType([PropTypes.func, PropTypes.node])
 };
 
 
