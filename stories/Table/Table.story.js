@@ -12,9 +12,6 @@ const defaultHeader = (
       <div data-hook="title" className={styles.title}>
         <span>Table title</span>
       </div>
-      <div data-hook="subtitle" className={styles.subtitle}>
-        Table subtitle
-      </div>
     </div>
     <div className={s.actions}>
       <Search
@@ -32,8 +29,9 @@ const defaultHeader = (
     </div>
   </div>);
 
-const selectionHeader = (
+const selectionHeader = numSelected => (
   <div className={s.actions}>
+    <span>{numSelected} Selected</span>
     <Button>
       Bulk Action
     </Button>
@@ -41,9 +39,6 @@ const selectionHeader = (
       Bulk Action
     </Button>
   </div>);
-
-const counterRender = count => `${count} Selected`;
-
 
 export default {
   category: storySettings.kind,
@@ -63,8 +58,13 @@ export default {
       {title: 'B', render: row => row.b}
     ],
     showSelection: true,
-    header: defaultHeader,
-    selectionHeader,
-    selectionCounter: counterRender
+    children: (
+    [
+      <Table.Header key="header">
+        {({getNumSelected}) => getNumSelected() === 0 ? defaultHeader : selectionHeader(getNumSelected())}
+      </Table.Header>,
+      <Table.Content key="content"/>
+    ]
+  )
   }
 };

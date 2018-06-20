@@ -15,6 +15,7 @@ describe('Table', () => {
     const driver = enzymeTableTestkitFactory({wrapper, dataHook});
     return {driver, wrapper};
   };
+
   const defaultProps = {
     id: 'id',
     data: [{a: 'value 1', b: 'value 2'}, {a: 'value 3', b: 'value 4'}],
@@ -24,8 +25,10 @@ describe('Table', () => {
       {title: 'B', render: row => row.b}
     ],
     rowClass: 'class-name',
-    showSelection: true
+    showSelection: true,
+    children: <Table.Content/>
   };
+
   const withSelection = {
     selections: [true, false],
     showSelection: true
@@ -210,63 +213,71 @@ describe('Table', () => {
     });
   });
 
-  describe('Header', () => {
-    const headerNode = (<div>Header</div>);
-    const headerAsRenderProp = () => headerNode;
-
-    it('should NOT have any Header node', () => {
+  describe('Compound components', () => {
+    it('should NOT have any compound components', () => {
       const driver = createDriver(
         <Table
           {...defaultProps}
           showSelection
           selections={[false, false]}
-          />);
-      expect(driver.isHeaderDisplayed()).toBeFalsy();
-      expect(driver.isSelectionHeaderDisplayed()).toBeFalsy();
+          />
+        );
+      expect(!!driver.getHeader()).toBeFalsy();
+      expect(!!driver.getFooter()).toBeFalsy();
+      expect(!!driver.getTitleBar()).toBeFalsy();
     });
 
-    it('should render Header node', () => {
+    it('should have Table.Header with BulkSelectionContext', () => {
       const driver = createDriver(
         <Table
           {...defaultProps}
           showSelection
-          header={headerNode}
-          selections={[false, false]}
-          />);
-      expect(driver.isHeaderDisplayed()).toBeTruthy();
-      expect(driver.isSelectionHeaderDisplayed()).toBeFalsy();
+          selections={[true, true]}
+          >
+          <Table.Header>
+            {({getNumSelected}) => <div>{`${getNumSelected()} Selected`}</div>}
+          </Table.Header>
+          <Table.Content/>
+        </Table>
+        );
+      expect(!!driver.getHeader()).toBeTruthy();
+      expect(driver.getHeader().textContent).toBe('2 Selected');
     });
 
-    it('should render Header function', () => {
+    it('should have Table.Footer with BulkSelectionContext', () => {
       const driver = createDriver(
         <Table
           {...defaultProps}
           showSelection
-          header={headerAsRenderProp}
-          selections={[false, false]}
-          />);
-      expect(driver.isHeaderDisplayed()).toBeTruthy();
-      expect(driver.isSelectionHeaderDisplayed()).toBeFalsy();
-    });
-  });
-
-  describe('Footer', () => {
-    const defaultFooter = (<div>Footer</div>);
-    const renderFooter = () => defaultFooter;
-
-    it('should not have a Footer node', () => {
-      const driver = createDriver(<Table {...defaultProps} showSelection/>);
-      expect(driver.isFooterDisplayed()).toBeFalsy();
+          selections={[true, true]}
+          >
+          <Table.Content/>
+          <Table.Footer>
+            {({getNumSelected}) => <div>{`${getNumSelected()} Selected`}</div>}
+          </Table.Footer>
+        </Table>
+        );
+      expect(!!driver.getFooter()).toBeTruthy();
+      expect(driver.getFooter().textContent).toBe('2 Selected');
     });
 
-    it('should render Footer node', () => {
-      const driver = createDriver(<Table {...defaultProps} showSelection footer={defaultFooter}/>);
-      expect(driver.isFooterDisplayed()).toBeTruthy();
-    });
-
-    it('should render Footer function', () => {
-      const driver = createDriver(<Table {...defaultProps} showSelection footer={renderFooter}/>);
-      expect(driver.isFooterDisplayed()).toBeTruthy();
+    it('should have Table.TitleBar', () => {
+      const driver = createDriver(
+        <Table
+          {...defaultProps}
+          showSelection
+          selections={[true, true]}
+          >
+          <div>
+            <Table.TitleBar/>
+          </div>
+          <div>
+            <Table.Content titleBarVisible={false}/>
+          </div>
+        </Table>
+        );
+      expect(!!driver.getTitleBar()).toBeTruthy();
+      expect(driver.isBulkSelectionCheckboxVisible()).toBeTruthy();
     });
   });
 

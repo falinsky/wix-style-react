@@ -23,7 +23,7 @@ export const DataTableHeader = props => (
 );
 
 DataTableHeader.propTypes = {
-  width: PropTypes.number
+  width: PropTypes.string
 };
 
 class DataTable extends WixComponent {

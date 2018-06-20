@@ -1,1 +1,1 @@
-export {default} from './DataTable.js';
+export {default, DataTableHeader} from './DataTable.js';

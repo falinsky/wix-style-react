@@ -3,11 +3,8 @@ import checkboxDriverFactory from '../Checkbox/Checkbox.driver';
 
 const tableDriverFactory = ({element, wrapper, component, eventTrigger}) => {
   const dataTableDriver = dataTableDriverFactory({element, wrapper, component});
-
   const getHeader = () => element.querySelector('[data-hook="table-header"]');
-  const getSelectionHeader = () => element.querySelector('[data-hook="table-selection-header"]');
-  const getSelectionHeaderTitle = () => element.querySelector('[data-hook="table-selection-header"]');
-  const getSelectionCounter = () => element.querySelector('[data-hook="table-selection-counter"]');
+  const getTitleBar = () => element.querySelector('[data-hook="table-title-bar"]');
   const getFooter = () => element.querySelector('[data-hook="table-footer"]');
   const getRowCheckboxDriver = index => checkboxDriverFactory({
     element: dataTableDriver.getCell(index, 0).querySelector('[data-hook="row-select"]'),
@@ -19,6 +16,7 @@ const tableDriverFactory = ({element, wrapper, component, eventTrigger}) => {
   });
   return {
     ...dataTableDriver,
+    element,
     clickRowChecbox: index => getRowCheckboxDriver(index).click(),
     clickBulkSelectionCheckbox: () => getBulkSelectionCheckboxDriver().click(),
     isRowCheckboxVisible: index => getRowCheckboxDriver(index).exists(),
@@ -36,11 +34,9 @@ const tableDriverFactory = ({element, wrapper, component, eventTrigger}) => {
       const checkboxDriver = getBulkSelectionCheckboxDriver();
       return !checkboxDriver.isChecked() && !checkboxDriver.isIndeterminate();
     },
-    isHeaderDisplayed: () => !!getHeader(),
-    isSelectionHeaderDisplayed: () => !!getSelectionHeader(),
-    getSelectionHeaderTitle: () => !!getSelectionHeaderTitle() && getSelectionHeaderTitle().innerHTML,
-    getSelectionCounterText: () => !!getSelectionCounter() && getSelectionCounter().innerHTML,
-    isFooterDisplayed: () => !!getFooter()
+    getHeader,
+    getFooter,
+    getTitleBar
   };
 };
 

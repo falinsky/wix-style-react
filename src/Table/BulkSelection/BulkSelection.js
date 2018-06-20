@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash/isEqual';
+import createReactContext from 'create-react-context';
+
+export const BulkSelectionContext = createReactContext();
 
 export const BulkSelectionState = Object.freeze({
   ALL: '_all_',
@@ -14,9 +17,9 @@ function getSelectionsCount(selections) {
 
 function getNextBulkSelectionState(selections) {
   const numOfSelected = getSelectionsCount(selections);
-  const numOfRows = selections.length;
+  const numOfItems = selections.length;
   return numOfSelected === 0 ? BulkSelectionState.NONE :
-    numOfSelected === numOfRows ? BulkSelectionState.ALL : BulkSelectionState.SOME;
+    numOfSelected === numOfItems ? BulkSelectionState.ALL : BulkSelectionState.SOME;
 }
 
 /**
@@ -69,25 +72,33 @@ export class BulkSelection extends React.Component {
     this.props.onSelectionChanged && this.props.onSelectionChanged(selections);
   }
 
-  toggleItem = rowNum => {
+  toggleItem = index => {
     const selections = this.state.selections.slice();
-    selections[rowNum] = !selections[rowNum];
+    selections[index] = !selections[index];
     this.setSelection({selections});
   }
 
   getStateAndHelpers() {
     return {
-      isSelected: rowNum => !!this.state.selections[rowNum],
+      isSelected: index => !!this.state.selections[index],
       toggleItem: this.toggleItem,
       toggleAll: this.toggleAll,
       setSelection: this.setSelection,
       toggleBulkSelection: this.toggleBulkSelection,
-      getBulkSelectionState: () => getNextBulkSelectionState(this.state.selections)
+      getBulkSelectionState: () => getNextBulkSelectionState(this.state.selections),
+      getNumSelected: () => getSelectionsCount(this.state.selections),
+      isAnySelected: () => getSelectionsCount(this.state.selections) > 0
     };
   }
 
   render() {
-    return this.props.children(this.getStateAndHelpers());
+    return (
+      <BulkSelectionContext.Provider
+        value={this.getStateAndHelpers()}
+        >
+        {this.props.children}
+      </BulkSelectionContext.Provider>
+    );
   }
 }
 
@@ -96,12 +107,12 @@ BulkSelection.defaultProps = {
 };
 
 BulkSelection.propTypes = {
-  /** Array of row selection boolean states. Should correspond in length to the data prop */
+  /** Array of item selection boolean states. Should correspond in length to the data prop */
   selections: PropTypes.arrayOf(PropTypes.bool),
-  /** Called when row selection changes. Receives the updated selection array as argument. */
+  /** Called when item selection changes. Receives the updated selection array as argument. */
   onSelectionChanged: PropTypes.func,
-  /** child as a function which receives the BulkSelection context */
-  children: PropTypes.func
+  /** Any - can consume the BulkSelectionProvider context */
+  children: PropTypes.any
 };
 
 

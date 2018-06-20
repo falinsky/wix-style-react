@@ -1,18 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import omit from 'lodash/omit';
-import s from './Table.scss';
-import DataTable from '../DataTable';
+import createReactContext from 'create-react-context';
+import DataTable, {DataTableHeader} from '../DataTable';
 import WixComponent from '../BaseComponents/WixComponent';
 import Checkbox from '../Checkbox';
-import {BulkSelection, BulkSelectionState} from './BulkSelection';
+import {BulkSelection, BulkSelectionState, BulkSelectionConsumer} from './BulkSelection';
 
-/**
- * Table is a composit component that allows adding header, fuooter and bulk actions to tables
- */
-export default class Table extends WixComponent {
+const TableDefaultProps = {
+  ...DataTable.defaultProps,
+  showSelection: false,
+  selections: []
+};
 
-  createCheckboxColumn({toggleBulkSelection, getBulkSelectionState, toggleItem, isSelected}) {
+export const TableContext = createReactContext(TableDefaultProps);
+
+function createColumns({tableProps, bulkSelectionContext}) {
+  const createCheckboxColumn = ({toggleBulkSelection, getBulkSelectionState, toggleItem, isSelected}) => {
     const bulkSelectionState = getBulkSelectionState();
     return {
       title: <Checkbox
@@ -28,82 +32,169 @@ export default class Table extends WixComponent {
           onChange={() => toggleItem(rowNum)}
           />)
     };
+  };
+
+  return tableProps.showSelection ? [createCheckboxColumn(bulkSelectionContext), ...tableProps.columns] : tableProps.columns;
+}
+
+const TableHeader = props => {
+  return (
+    <div data-hook="table-header">
+      <BulkSelectionConsumer consumerCompName="Table.Header" providerCompName="Table">
+        {props.children}
+      </BulkSelectionConsumer>
+    </div>
+  );
+};
+TableHeader.displayName = 'Table.Header';
+TableHeader.propTypes = {
+  children: PropTypes.any
+};
+
+const TableFooter = props => {
+  return (
+    <div data-hook="table-footer">
+      <BulkSelectionConsumer consumerCompName="Table.Footer" providerCompName="Table">
+        {props.children}
+      </BulkSelectionConsumer>
+    </div>
+  );
+};
+TableHeader.displayName = 'Table.Footer';
+TableFooter.propTypes = {
+  children: PropTypes.any
+};
+
+/**
+ * TitleBar (aka DataTableHeader)
+ */
+const TableTitleBar = () => {
+  return (
+    <BulkSelectionConsumer consumerCompName="Table.TitleBar" providerCompName="Table">
+      {bulkSelectionContext => (
+        <TableContext.Consumer>
+          {tableProps =>
+            (
+              <div data-hook="table-title-bar">
+                <DataTableHeader
+                  {...tableProps}
+                  dataHook="table-title-bar"
+                  columns={createColumns({tableProps, bulkSelectionContext})}
+                  newDesign
+                  />
+              </div>
+            )
+          }
+        </TableContext.Consumer>
+      )}
+    </BulkSelectionConsumer>
+  );
+};
+TableTitleBar.displayName = 'Table.TitleBar';
+/**
+ *
+ */
+const TableContent = ({titleBarVisible}) => {
+  //TODO: figure out if we need to put result of createColumns() on state, in order to avoid
+  // redundant renders.
+  return (
+    <BulkSelectionConsumer consumerCompName="Table.Content" providerCompName="Table">
+      {bulkSelectionContext => (
+        <TableContext.Consumer>
+          {tableProps => {
+            const dataTableProps = omit(tableProps,
+              'showSelection',
+              'selections',
+              'onSelectionChanged',
+              'dataHook',
+              'columns',
+              'newDesign',
+              'hideHeader',
+            );
+
+            return (
+              <DataTable
+                {...dataTableProps}
+                dataHook="table-content"
+                columns={createColumns({tableProps, bulkSelectionContext})}
+                newDesign
+                hideHeader={!titleBarVisible}
+                />
+            );
+          }}
+        </TableContext.Consumer>
+      )}
+    </BulkSelectionConsumer>
+  );
+};
+TableContent.displayName = 'Table.Content';
+TableContent.propTypes = {
+  titleBarVisible: PropTypes.bool
+};
+TableContent.defaultProps = {
+  titleBarVisible: true
+};
+
+/**
+ * Table is a composit component that allows adding SelectionColumn, Header (on top of the TitleBar), Footer.
+ * It is a context provider, and thus the Table.Header, Table.TitleBar and Table.Content can be rendered separatly.
+ */
+export default class Table extends WixComponent {
+
+  static Header = TableHeader;
+  static TitleBar = TableTitleBar;
+  static Content = TableContent;
+  static Footer = TableFooter;
+
+  constructor(props) {
+    super(props);
+    this.state = props;
   }
 
-  renderHeader(bulkSelectionContext) {
-    const {header} = this.props;
-    return (
-      <div className={s.header} data-hook="table-header">
-        {typeof header === 'function' ? header(bulkSelectionContext) : header}
-      </div>);
-  }
-
-  renderFooter(bulkSelectionContext) {
-    const {footer} = this.props;
-    return (
-      <div className={s.footer} data-hook="table-footer">
-        {typeof footer === 'function' ? footer(bulkSelectionContext) : footer}
-      </div>);
+  componentWillReceiveProps(nextProps) {
+    // The state IS the prop since Table acts as a context provider for all Table props.
+    this.setState(nextProps);
   }
 
   shouldComponentUpdate() {
+    // Table is not really a PureComponent
     return true;
   }
 
   render() {
-    const {header, footer, showSelection, onSelectionChanged, columns} = this.props;
-
-    const dataTableProps = omit(this.props,
-      'header',
-      'footer',
-      'showSelection',
-      'selections',
-      'onSelectionChanged',
-      'columns',
-      'dataHook');
-
     return (
-      <BulkSelection
-        selections={this.props.selections}
-        onSelectionChanged={onSelectionChanged}
-        >
-        {
-          bulkSelectionContext => (
-            <div>
-              {header && this.renderHeader(bulkSelectionContext)}
-              <DataTable
-                {...dataTableProps}
-                dataHook="table"
-                columns={showSelection ? [this.createCheckboxColumn(bulkSelectionContext), ...columns] : columns}
-                newDesign
-                />
-              {footer && this.renderFooter(bulkSelectionContext)}
-            </div>
-          )
-        }
-      </BulkSelection>
+      <TableContext.Provider value={this.state}>
+        <BulkSelection
+          selections={this.props.selections}
+          onSelectionChanged={this.props.onSelectionChanged}
+          >
+          <div> {/* Wrapping with a div in case multiple children are passed*/}
+            {this.props.children}
+          </div>
+        </BulkSelection>
+      </TableContext.Provider>
     );
   }
 }
 
 Table.defaultProps = {
-  ...DataTable.defaultProps,
-  showSelection: false,
-  selections: []
+  ...TableDefaultProps,
+  children:
+  [
+    <Table.Content key="content"/>
+  ]
 };
 
+
+
 Table.propTypes = {
-  ...omit(DataTable.propTypes, ['thPadding', 'thHeight', 'thFontSize', 'thBorder', 'thColor', 'thOpacity', 'thLetterSpacing']),
+  ...omit(DataTable.propTypes, ['thPadding', 'thHeight', 'thFontSize', 'thBorder', 'thColor', 'thOpacity', 'thLetterSpacing', 'hideHeader']),
   /** Indicates wether to show a selection column (with checkboxes) */
   showSelection: PropTypes.bool,
   /** Array of row selection boolean states. Should correspond in length to the data prop */
   selections: PropTypes.arrayOf(PropTypes.bool),
   /** Called when row selection changes. Receives the updated selection array as argument. */
-  onSelectionChanged: PropTypes.func,
-  /** The header that appear above the table's column titles. Can be a Node, or a function with this signature: (selection: Array[boolean])=>React.ReactNode */
-  header: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
-  /** The footer that appear below the table. Can be a Node, or a function with this signature: (selection: Array[boolean])=>React.ReactNode*/
-  footer: PropTypes.oneOfType([PropTypes.func, PropTypes.node])
+  onSelectionChanged: PropTypes.func
 };
 
 
