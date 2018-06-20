@@ -5,6 +5,7 @@ import Search from 'wix-style-react/Search';
 import styles from '../../src/Card/Header/Header.scss';
 import s from './Table.story.scss';
 import {storySettings} from './storySettings';
+import {TableExample} from './TableExample';
 
 const defaultHeader = (
   <div className={styles.header}>
@@ -66,5 +67,12 @@ export default {
       <Table.Content key="content"/>
     ]
   )
-  }
+  },
+  examples: (
+    <div>
+      <h1>Examples</h1>
+      <TableExample/>
+    </div>
+  )
+
 };

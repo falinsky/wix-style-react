@@ -30,7 +30,10 @@ function createColumns({tableProps, bulkSelectionContext}) {
           dataHook="row-select"
           checked={isSelected(rowNum)}
           onChange={() => toggleItem(rowNum)}
-          />)
+          />
+        ),
+      width: '12px'
+
     };
   };
 
