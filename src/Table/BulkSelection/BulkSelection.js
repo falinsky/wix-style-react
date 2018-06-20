@@ -64,6 +64,7 @@ export class BulkSelection extends React.Component {
     } else {
       selections = this.toggleAll(true);
     }
+
     this.setSelection({selections});
   }
 
