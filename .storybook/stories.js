@@ -109,6 +109,7 @@ import '../stories/Badge'; // 12.1 Badge
 import '../stories/CounterBadge'; //12.3 CounterBadge
 import '../stories/Highlighter.story.js'; // 12.4 Highlighter
 import '../stories/Tag.story.js'; // 12.5 Tag
+import '../stories/Field.story.js'; // Field
 
 // 13. Work in progress
 import '../stories/Table'; // 13.1 Table Card
