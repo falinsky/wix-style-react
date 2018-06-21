@@ -2,9 +2,10 @@
 
 import React from 'react';
 import {createDriverFactory} from '../test-common';
-import fieldDriverFactory from './Field.driver.js';
+import fieldDriverFactory from './driver.js';
 
 import Field from './';
+import styles from './styles.scss';
 
 const createDriver = createDriverFactory(fieldDriverFactory);
 
@@ -24,14 +25,30 @@ describe('Field', () => {
   });
 
   describe('`label` prop', () => {
-    it('should be rendered under label hook', () => {
+    it('should be rendered with Text component', () => {
       const driver = createDriver(<Field label="hello label"/>);
-      expect(driver.getLabel().innerHTML).toEqual('hello label');
+      expect(driver.getLabel().innerHTML).toMatch(/Text.*hello label/);
     });
 
     it('should not render div when `label` is undefined', () => {
       const driver = createDriver(<Field/>);
       expect(driver.getLabel()).toEqual(null);
+    });
+  });
+
+  describe('given `label` and `required` props', () => {
+    it('should render asterisk', () => {
+      const driver = createDriver(<Field label="hello" required/>);
+      expect(driver.getAsterisk().innerHTML).toEqual('*');
+    });
+  });
+
+  describe('given only `required` prop', () => {
+    it('should render it next to input', () => {
+      const driver = createDriver(<Field required/>);
+      const asterisk = driver.getAsterisk();
+      expect(asterisk.innerHTML).toEqual('*');
+      expect(asterisk.className).toMatch(styles.asteriskInline);
     });
   });
 });

@@ -1,0 +1,37 @@
+@import '../common.scss';
+
+.root {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  flex: 1 0 auto;
+}
+
+.label {
+  margin-bottom: 6px;
+}
+
+.children {
+  flex: 1 0 100%;
+}
+
+.childrenInline {
+  flex: 1 0 auto;
+}
+
+// TODO: get SVG from designers
+.asterisk {
+  display: inline-block;
+  color: $B20;
+  font-size: 20px;
+  margin-left: 6px;
+  margin-top: -4px;
+}
+
+.asteriskInline {
+
+}
