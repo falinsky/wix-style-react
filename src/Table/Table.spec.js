@@ -102,6 +102,17 @@ describe('Table', () => {
     });
   });
 
+  describe('setSelectedIds', () => {
+    it('should select rows when setSelectedIds is called', () => {
+      const {driver, wrapper} = createEnzymeDriver(<Table {...defaultProps} selectedIds={noneSelected()}/>);
+      expect(driver.isRowSelected(0)).toBeFalsy();
+      expect(driver.isRowSelected(1)).toBeFalsy();
+      wrapper.instance().setSelectedIds(allSelected());
+      expect(driver.isRowSelected(0)).toBeTruthy();
+      expect(driver.isRowSelected(1)).toBeTruthy();
+    });
+  });
+
   describe('row selection', () => {
     it('should select row when checkbox clicked given row not selected', () => {
       const driver = createDriver(<Table {...defaultProps} selectedIds={firstSelected()}/>);

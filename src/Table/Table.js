@@ -78,29 +78,52 @@ TableFooter.propTypes = {
   children: any
 };
 
+function getDataTableProps(tableProps) {
+  return {
+    ...omit(tableProps,
+          'showSelection',
+          'selections',
+          'onSelectionChanged',
+          'dataHook',
+          'newDesign',
+          'hideHeader',
+        ),
+    newDesign: true
+  };
+}
+
+
 /**
  * TitleBar (aka DataTableHeader)
  */
 const TableTitleBar = () => {
   return (
-    <BulkSelectionConsumer consumerCompName="Table.TitleBar" providerCompName="Table">
-      {bulkSelectionContext => (
-        <TableContext.Consumer>
-          {tableProps =>
-            (
-              <div data-hook="table-title-bar">
-                <DataTableHeader
-                  {...tableProps}
-                  dataHook="table-title-bar"
-                  columns={createColumns({tableProps, bulkSelectionContext})}
-                  newDesign
-                  />
-              </div>
-            )
-          }
-        </TableContext.Consumer>
-      )}
-    </BulkSelectionConsumer>
+    <TableContext.Consumer>
+      {tableProps => {
+        const dataTableProps = getDataTableProps(tableProps);
+        if (tableProps.showSelection) {
+          return (
+            <BulkSelectionConsumer consumerCompName="Table.TitleBar" providerCompName="Table">
+              {bulkSelectionContext => (
+                <div data-hook="table-title-bar">
+                  <DataTableHeader
+                    {...dataTableProps}
+                    columns={createColumns({tableProps, bulkSelectionContext})}
+                    />
+                </div>
+            )}
+            </BulkSelectionConsumer>
+          );
+        } else {
+          return (
+            <div data-hook="table-title-bar">
+              <DataTableHeader {...dataTableProps}/>
+            </div>
+          );
+        }
+      }}
+    </TableContext.Consumer>
+
   );
 };
 TableTitleBar.displayName = 'Table.TitleBar';
@@ -111,33 +134,34 @@ const TableContent = ({titleBarVisible}) => {
   //TODO: figure out if we need to put result of createColumns() on state, in order to avoid
   // redundant renders.
   return (
-    <BulkSelectionConsumer consumerCompName="Table.Content" providerCompName="Table">
-      {bulkSelectionContext => (
-        <TableContext.Consumer>
-          {tableProps => {
-            const dataTableProps = omit(tableProps,
-              'showSelection',
-              'selections',
-              'onSelectionChanged',
-              'dataHook',
-              'columns',
-              'newDesign',
-              'hideHeader',
-            );
+    <TableContext.Consumer>
+      {tableProps => {
+        const dataTableProps = {
+          ...getDataTableProps(tableProps),
+          dataHook: 'table-content',
+          hideHeader: !titleBarVisible
+        };
 
-            return (
-              <DataTable
-                {...dataTableProps}
-                dataHook="table-content"
-                columns={createColumns({tableProps, bulkSelectionContext})}
-                newDesign
-                hideHeader={!titleBarVisible}
-                />
-            );
-          }}
-        </TableContext.Consumer>
-      )}
-    </BulkSelectionConsumer>
+        if (tableProps.showSelection) {
+          return (
+            <BulkSelectionConsumer consumerCompName="Table.Content" providerCompName="Table">
+              {bulkSelectionContext => (
+                <DataTable
+                  {...dataTableProps}
+                  columns={createColumns({tableProps, bulkSelectionContext})}
+                  />
+              )}
+            </BulkSelectionConsumer>
+          );
+        } else {
+          return (
+            <DataTable
+              {...dataTableProps}
+              />
+          );
+        }
+      }}
+    </TableContext.Consumer>
   );
 };
 TableContent.displayName = 'Table.Content';
@@ -165,7 +189,7 @@ export default class Table extends WixComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    // The state IS the prop since Table acts as a context provider for all Table props.
+    // The state IS the props since Table acts as a context provider for all Table props.
     this.setState(nextProps);
   }
 
@@ -174,18 +198,31 @@ export default class Table extends WixComponent {
     return true;
   }
 
+  setSelectedIds(selectedIds) {
+    this.bulkSelection.setSelectedIds(selectedIds);
+  }
+
   render() {
+    const childrenWithWrapper = (
+      <div> {/* Wrapping with a div in case multiple children are passed*/}
+        {this.props.children}
+      </div>
+    );
     return (
       <TableContext.Provider value={this.state}>
-        <BulkSelection
-          selectedIds={this.props.selectedIds}
-          allIds={this.state.data.map((rowData, rowIndex) => defaultTo(rowData.id, rowIndex))}
-          onSelectionChanged={this.props.onSelectionChanged}
-          >
-          <div> {/* Wrapping with a div in case multiple children are passed*/}
-            {this.props.children}
-          </div>
-        </BulkSelection>
+        {this.props.showSelection ?
+        (
+          <BulkSelection
+            ref={_ref => this.bulkSelection = _ref}
+            selectedIds={this.props.selectedIds}
+            allIds={this.state.data.map((rowData, rowIndex) => defaultTo(rowData.id, rowIndex))}
+            onSelectionChanged={this.props.onSelectionChanged}
+            >
+            {childrenWithWrapper}
+          </BulkSelection>
+        ) :
+        childrenWithWrapper
+        }
       </TableContext.Provider>
     );
   }
