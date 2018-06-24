@@ -1,8 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import {string, number, arrayOf, oneOfType, func, any} from 'prop-types';
 import isEqual from 'lodash/isEqual';
 import createReactContext from 'create-react-context';
-
 export const BulkSelectionContext = createReactContext();
 
 export const BulkSelectionState = Object.freeze({
@@ -11,16 +10,6 @@ export const BulkSelectionState = Object.freeze({
   SOME: '_some_'
 });
 
-function getSelectionsCount(selections) {
-  return selections.reduce((total, current) => current ? total + 1 : total, 0);
-}
-
-function getNextBulkSelectionState(selections) {
-  const numOfSelected = getSelectionsCount(selections);
-  const numOfItems = selections.length;
-  return numOfSelected === 0 ? BulkSelectionState.NONE :
-    numOfSelected === numOfItems ? BulkSelectionState.ALL : BulkSelectionState.SOME;
-}
 
 /**
  * BulkSelection manages the state and logic of bulk selection.
@@ -33,69 +22,94 @@ export class BulkSelection extends React.Component {
 
   constructor(props) {
     super(props);
-    const selections = props.selections.slice();
     this.state = {
-      selections
+      selectedIds: (props.selectedIds || []).slice()
     };
   }
 
+  getSelectedCount() {
+    return this.state.selectedIds.length;
+  }
+
+  getBulkSelectionState() {
+    const numOfSelected = this.getSelectedCount();
+    const numOfItems = this.props.allIds.length;
+    return numOfSelected === 0 ? BulkSelectionState.NONE :
+      numOfSelected === numOfItems ? BulkSelectionState.ALL : BulkSelectionState.SOME;
+  }
 
   // This method is equivilant to the React 16 Lifecycle method getDerivedStateFromProps
   static _getDerivedStateFromProps(props, state) {
-    return isEqual(props.selections, state.selections) ? null : {selections: props.selections.slice()};
+    if (!props.selectedIds) {
+      return null;
+    }
+    return isEqual(props.selectedIds, state.selectedIds) ? null : {selectedIds: props.selectedIds.slice()};
   }
 
   componentWillReceiveProps(nextProps) {
     const newState = BulkSelection._getDerivedStateFromProps(nextProps, this.state);
     newState && this.setState(newState);
+    //TODO: should we call the onSelectionChanged callback here?
   }
 
   toggleAll = enable => {
-    return this.state.selections.map(() => enable);
+    if (enable) {
+      this.setSelectedIds(this.props.allIds);
+    } else {
+      this.setSelectedIds([]);
+    }
   }
 
   toggleBulkSelection = () => {
-    let selections;
-    const bulkSelectionState = getNextBulkSelectionState(this.state.selections);
+    const bulkSelectionState = this.getBulkSelectionState();
     if (bulkSelectionState === BulkSelectionState.SOME) {
-      selections = this.toggleAll(true);
+      this.toggleAll(true);
     } else if (bulkSelectionState === BulkSelectionState.ALL) {
-      selections = this.toggleAll(false);
+      this.toggleAll(false);
     } else {
-      selections = this.toggleAll(true);
+      this.toggleAll(true);
     }
-
-    this.setSelection({selections});
   }
 
-  setSelection = ({selections}) => {
-    this.setState({selections});
-    this.props.onSelectionChanged && this.props.onSelectionChanged(selections);
+  isSelected = id => {
+    return this.state.selectedIds.indexOf(id) !== -1;
   }
 
-  toggleItem = index => {
-    const selections = this.state.selections.slice();
-    selections[index] = !selections[index];
-    this.setSelection({selections});
+  toggleSelectionById = id => {
+    this.setSelectedIds(
+      this.isSelected(id) ?
+      this.state.selectedIds.filter(_id => _id !== id) :
+      this.state.selectedIds.concat(id)
+    );
   }
 
-  getStateAndHelpers() {
-    return {
-      isSelected: index => !!this.state.selections[index],
-      toggleItem: this.toggleItem,
-      toggleAll: this.toggleAll,
-      setSelection: this.setSelection,
-      toggleBulkSelection: this.toggleBulkSelection,
-      getBulkSelectionState: () => getNextBulkSelectionState(this.state.selections),
-      getNumSelected: () => getSelectionsCount(this.state.selections),
-      isAnySelected: () => getSelectionsCount(this.state.selections) > 0
-    };
+  setSelectedIds = selectedIds => {
+    if (!Array.isArray(selectedIds)) {
+      throw new Error('selectedIds must be an array');
+    }
+    this.setState({selectedIds}, () => {
+      this.props.onSelectionChanged && this.props.onSelectionChanged(selectedIds.slice());
+    });
   }
+
+  stateAndHelpers = {
+    // Getters
+    isAnySelected: () => this.getSelectedCount() > 0,
+    getBulkSelectionState: () => this.getBulkSelectionState(),
+    getNumSelected: () => this.getSelectedCount(),
+    isSelected: this.isSelected,
+    // Modifiers
+    toggleSelectionById: this.toggleSelectionById,
+    toggleBulkSelection: this.toggleBulkSelection,
+    selectAll: () => this.toggleAll(true),
+    deselectAll: () => this.toggleAll(false),
+    setSelectedIds: this.setSelectedIds
+  };
 
   render() {
     return (
       <BulkSelectionContext.Provider
-        value={this.getStateAndHelpers()}
+        value={this.stateAndHelpers}
         >
         {this.props.children}
       </BulkSelectionContext.Provider>
@@ -103,17 +117,15 @@ export class BulkSelection extends React.Component {
   }
 }
 
-BulkSelection.defaultProps = {
-  selections: []
-};
-
 BulkSelection.propTypes = {
   /** Array of item selection boolean states. Should correspond in length to the data prop */
-  selections: PropTypes.arrayOf(PropTypes.bool),
-  /** Called when item selection changes. Receives the updated selection array as argument. */
-  onSelectionChanged: PropTypes.func,
+  selectedIds: oneOfType([arrayOf(string), arrayOf(number)]),
+  /** An array of all item ids (string ids) */
+  allIds: oneOfType([arrayOf(string), arrayOf(number)]).isRequired,
+  /** Called when item selection changes. Receives the updated selectedIds array as argument. */
+  onSelectionChanged: func,
   /** Any - can consume the BulkSelectionProvider context */
-  children: PropTypes.any
+  children: any
 };
 
 
