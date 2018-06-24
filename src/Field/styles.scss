@@ -33,5 +33,15 @@
 }
 
 .asteriskInline {
+}
 
+.infoIcon {
+  display: inline-block;
+  color: $B20;
+  vertical-align: middle;
+}
+
+.infoIconInline {
+  display: inline-flex;
+  align-items: center;
 }

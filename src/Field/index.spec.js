@@ -1,7 +1,7 @@
 /* global describe it expect */
 
 import React from 'react';
-import {createDriverFactory} from '../test-common';
+import {createDriverFactory, resolveIn} from '../test-common';
 import fieldDriverFactory from './driver.js';
 
 import Field from './';
@@ -36,19 +36,49 @@ describe('Field', () => {
     });
   });
 
-  describe('given `label` and `required` props', () => {
-    it('should render asterisk', () => {
-      const driver = createDriver(<Field label="hello" required/>);
-      expect(driver.getAsterisk().innerHTML).toEqual('*');
+  describe('required asterisk', () => {
+    describe('given `label` and `required` props', () => {
+      it('should render asterisk', () => {
+        const driver = createDriver(<Field label="hello" required/>);
+        expect(driver.getAsterisk().innerHTML).toEqual('*');
+      });
+    });
+
+    describe('given only `required` prop', () => {
+      it('should render it inline', () => {
+        const driver = createDriver(<Field required/>);
+        const asterisk = driver.getAsterisk();
+        expect(asterisk.innerHTML).toEqual('*');
+        expect(asterisk.className).toMatch(styles.asteriskInline);
+      });
     });
   });
 
-  describe('given only `required` prop', () => {
-    it('should render it next to input', () => {
-      const driver = createDriver(<Field required/>);
-      const asterisk = driver.getAsterisk();
-      expect(asterisk.innerHTML).toEqual('*');
-      expect(asterisk.className).toMatch(styles.asteriskInline);
+  describe('`info` icon', () => {
+    describe('given `label`', () => {
+      it('should render it', () => {
+        const driver = createDriver(<Field info="hello" label="hello"/>);
+        expect(driver.getInfoIcon()).not.toEqual(null);
+      });
+
+      it('should display value of `info` in tooltip', () => {
+        const driver = createDriver(<Field info="hello from tooltip"/>);
+        const tooltip = driver.getInfoTooltip();
+
+        tooltip.mouseEnter();
+
+        return resolveIn(500).then(() => {
+          expect(tooltip.getContent()).toBe('hello from tooltip');
+        });
+      });
+    });
+
+    describe('given only `info` prop', () => {
+      it('should render inline', () => {
+        const driver = createDriver(<Field info="hello"/>);
+        const infoIcon = driver.getInfoIcon();
+        expect(infoIcon.className).toMatch(styles.infoIconInline);
+      });
     });
   });
 });

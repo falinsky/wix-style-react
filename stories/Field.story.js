@@ -2,10 +2,14 @@ import React from 'react';
 
 import Field from 'wix-style-react/Field';
 import Input from 'wix-style-react/Input';
+import InputArea from 'wix-style-react/InputArea';
 
 const childrenExamples = [
   {label: 'Input',
     value: <Input placeholder="Field Input"/>
+  },
+  {label: 'InputArea',
+    value: <InputArea placeholder="Field Input"/>
   }
 ];
 
@@ -18,7 +22,8 @@ export default {
   componentProps: {
     children: childrenExamples[0].value,
     label: 'This is an input:',
-    required: true
+    required: true,
+    info: 'Hello'
   },
 
   exampleProps: {
