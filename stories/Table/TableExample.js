@@ -19,16 +19,19 @@ export class TableExample extends React.Component {
             data={baseData}
             itemsPerPage={20}
             columns={[
-            {title: 'Row Number', render: (row, rowNum) => '#' + (rowNum + 1), width: '20%', minWidth: '75px', important: true},
             {title: 'First Name', render: row => <span>{row.firstName}</span>, width: '40%', minWidth: '100px'},
             {title: 'Last Name', render: row => <span>{row.lastName}</span>, width: '40%', minWidth: '100px'}
             ]}
             showSelection
             >
             <Table.Header>
-              {() => (
-                <span>My Table</span>
-              )}
+              {
+                ({getNumSelected}) => {
+                  return getNumSelected() > 0 ?
+                    <span>{`${getNumSelected()} Selected`}</span> :
+                    <span>My Table Title</span>;
+                }
+              }
             </Table.Header>
             <Table.Content/>
           </Table>
