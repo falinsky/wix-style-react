@@ -31,8 +31,11 @@ const infoIcon = ({content, isInline} = {}) =>
     </Tooltip>
   </div>;
 
-const Field = ({children, label, required, info}) =>
-  <div className={styles.root}>
+const Field = ({children, label, required, info, dataHook}) =>
+  <div
+    data-hook={dataHook}
+    className={styles.root}
+    >
     { label &&
       <div
         className={styles.label}
@@ -64,7 +67,8 @@ Field.propTypes = {
   children: PropTypes.node,
   label: PropTypes.node,
   required: PropTypes.bool,
-  info: PropTypes.node
+  info: PropTypes.node,
+  dataHook: PropTypes.string
 };
 Field.defaultProps = {};
 

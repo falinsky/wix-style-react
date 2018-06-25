@@ -1,16 +1,18 @@
 import {tooltipTestkitFactory} from '../../testkit';
 
-const find = (element, query) =>
-  element.querySelector(query);
+const findByHook = (element, hook) =>
+  element.querySelector(`[data-hook*="${hook}"]`);
 
 const getInfoIcon = element =>
-  element.querySelector('[data-hook^="field-infoicon"]');
+  findByHook(element, 'field-infoicon');
 
 const fieldDriver = ({component, element}) => ({
+  exists: () => !!element,
+  element: () => element,
   component: () => component,
-  getChildren: () => find(element, '[data-hook^="field-children"]'),
-  getLabel: () => element.querySelector('[data-hook^="field-label"]'),
-  getAsterisk: () => element.querySelector('[data-hook^="field-asterisk"]'),
+  getChildren: () => findByHook(element, 'field-children'),
+  getLabel: () => findByHook(element, 'field-label'),
+  getAsterisk: () => findByHook(element, 'field-asterisk'),
   getInfoIcon: () => getInfoIcon(element),
   getInfoTooltip: () =>
     tooltipTestkitFactory({

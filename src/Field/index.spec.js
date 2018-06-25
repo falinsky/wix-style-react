@@ -1,11 +1,15 @@
 /* global describe it expect */
 
 import React from 'react';
+import {mount} from 'enzyme';
+
 import {createDriverFactory, resolveIn} from '../test-common';
+import {isTestkitExists, isEnzymeTestkitExists} from '../../testkit/test-common';
+import {fieldTestkitFactory} from '../../testkit';
+import {fieldTestkitFactory as enzymeFieldTestkitFactory} from '../../testkit/enzyme';
 import fieldDriverFactory from './driver.js';
 
 import Field from './';
-import styles from './styles.scss';
 
 const createDriver = createDriverFactory(fieldDriverFactory);
 
@@ -79,6 +83,16 @@ describe('Field', () => {
         const infoIcon = driver.getInfoIcon();
         expect(infoIcon.attributes['data-hook'].value).toEqual('field-infoicon-inline');
       });
+    });
+  });
+
+  describe('testkits', () => {
+    it('should exist', () => {
+      expect(isTestkitExists(<Field/>, fieldTestkitFactory)).toBe(true);
+    });
+
+    it('should exist for enzyme', () => {
+      expect(isEnzymeTestkitExists(<Field/>, enzymeFieldTestkitFactory, mount)).toBe(true);
     });
   });
 });
