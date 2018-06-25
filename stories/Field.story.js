@@ -20,11 +20,12 @@ const childrenExamples = [
 
 export default {
   category: '12. Other',
-  storyName: 'Field',
+  storyName: '12.6 Field',
   component: Field,
   componentPath: '../src/Field',
 
   componentProps: {
+    dataHook: 'storybook-field',
     children: childrenExamples[0].value,
     label: 'This is an input:',
     required: true,
