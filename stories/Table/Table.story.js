@@ -75,7 +75,7 @@ export default {
       <h1>Examples</h1>
       <div className={s.examples}>
         <div className={s.example}>
-          <CodeExample title="WithBulkActions" code={TableExampleRaw}>
+          <CodeExample title="With Bulk Actions" code={TableExampleRaw}>
             <TableExample/>
           </CodeExample>
         </div>
