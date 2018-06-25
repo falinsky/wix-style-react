@@ -1,7 +1,21 @@
+@import '../../src/common.scss';
+
 .actions {
   display: flex;
 }
 
 .filter-select {
   margin: 0 20px 0 10px;
+}
+
+.examples {
+  background-color: $D70;
+  width: 100%;
+  display: flex;
+}
+
+.example {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  margin-left: 50px;
 }
