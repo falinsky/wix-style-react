@@ -7,8 +7,9 @@ import DataTable, {DataTableHeader} from '../DataTable';
 import WixComponent from '../BaseComponents/WixComponent';
 import Checkbox from '../Checkbox';
 import {BulkSelection, BulkSelectionState, BulkSelectionConsumer} from './BulkSelection';
-import s from './Table.scss';
+import * as TableHeader from './TableHeader';
 
+export {TableHeader};
 export {BulkSelectionState};
 
 const TableDefaultProps = {
@@ -53,19 +54,6 @@ function createColumns({tableProps, bulkSelectionContext}) {
   return tableProps.showSelection ? [createCheckboxColumn(bulkSelectionContext), ...tableProps.columns] : tableProps.columns;
 }
 
-const TableHeader = props => {
-  return (
-    <div data-hook="table-header" className={s.header}>
-      <BulkSelectionConsumer consumerCompName="Table.Header" providerCompName="Table">
-        {props.children}
-      </BulkSelectionConsumer>
-    </div>
-  );
-};
-TableHeader.displayName = 'Table.Header';
-TableHeader.propTypes = {
-  children: any
-};
 
 const TableFooter = props => {
   return (
@@ -76,7 +64,7 @@ const TableFooter = props => {
     </div>
   );
 };
-TableHeader.displayName = 'Table.Footer';
+TableFooter.displayName = 'Table.Footer';
 TableFooter.propTypes = {
   children: any
 };
@@ -126,7 +114,6 @@ const TableTitleBar = () => {
         }
       }}
     </TableContext.Consumer>
-
   );
 };
 TableTitleBar.displayName = 'Table.TitleBar';
@@ -179,9 +166,9 @@ TableContent.defaultProps = {
  * Table is a composit component that allows adding SelectionColumn, Header (on top of the TitleBar), Footer.
  * It is a context provider, and thus the Table.Header, Table.TitleBar and Table.Content can be rendered separatly.
  */
-export default class Table extends WixComponent {
+export class Table extends WixComponent {
 
-  static Header = TableHeader;
+  static Header = TableHeader.TableHeader;
   static TitleBar = TableTitleBar;
   static Content = TableContent;
   static Footer = TableFooter;
@@ -239,8 +226,6 @@ Table.defaultProps = {
   ]
 };
 
-
-
 Table.propTypes = {
   ...omit(DataTable.propTypes, ['thPadding', 'thHeight', 'thFontSize', 'thBorder', 'thColor', 'thOpacity', 'thLetterSpacing', 'hideHeader']),
   /** Indicates wether to show a selection column (with checkboxes) */
@@ -253,5 +238,4 @@ Table.propTypes = {
   onSelectionChanged: func
 };
 
-
-
+export default Table;

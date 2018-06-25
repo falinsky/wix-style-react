@@ -1,6 +1,15 @@
 import React from 'react';
-import Table from 'wix-style-react/Table';
+import {Table} from 'wix-style-react/Table';
+import {
+  HeaderLayout,
+  LayoutStart,
+  LayoutEnd,
+  Title,
+  SelectedCount
+} from '../../src/Table/TableHeader';
+
 import Card from 'wix-style-react/Card';
+import Search from 'wix-style-react/Search';
 
 const baseData = [
   {firstName: 'Meghan', lastName: 'Bishop'},
@@ -10,6 +19,28 @@ const baseData = [
 ];
 
 export class TableExample extends React.Component {
+
+  renderMainHeader() {
+    return (
+      <HeaderLayout>
+        <LayoutStart>
+          <Title>My Table</Title>
+        </LayoutStart>
+        <LayoutEnd>
+          <Search/>
+        </LayoutEnd>
+      </HeaderLayout>
+    );
+  }
+
+  renderBulkActionsHeader(context) {
+    return (
+      <div>
+        <SelectedCount>{`${context.getNumSelected()} Selected`}</SelectedCount>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div style={{width: '966px'}}>
@@ -26,10 +57,10 @@ export class TableExample extends React.Component {
             >
             <Table.Header>
               {
-                ({getNumSelected}) => {
-                  return getNumSelected() > 0 ?
-                    <span>{`${getNumSelected()} Selected`}</span> :
-                    <span>My Table Title</span>;
+                context => {
+                  return context.getNumSelected() > 0 ?
+                    this.renderBulkActionsHeader(context) :
+                    this.renderMainHeader();
                 }
               }
             </Table.Header>

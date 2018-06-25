@@ -1,0 +1,27 @@
+.header {
+  display: flex;
+  box-sizing: border-box;
+  padding: 21px 30px;
+  height: 78px;
+  align-items: center;
+}
+
+.headerLayout {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.headerLayoutStart {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
+.headerLayoutEnd {
+  display: flex;
+  align-items: center;
+  justify-content: end
+}
+
+
