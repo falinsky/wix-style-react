@@ -5,7 +5,10 @@ import Search from 'wix-style-react/Search';
 import styles from '../../src/Card/Header/Header.scss';
 import s from './Table.story.scss';
 import {storySettings} from './storySettings';
+import CodeExample from 'wix-storybook-utils/CodeExample';
+
 import {TableExample} from './TableExample';
+import TableExampleRaw from '!raw-loader!./TableExample';
 
 const defaultHeader = (
   <div className={styles.header}>
@@ -70,7 +73,13 @@ export default {
   examples: (
     <div>
       <h1>Examples</h1>
-      <TableExample/>
+      <div className={s.examples}>
+        <div className={s.example}>
+          <CodeExample title="WithBulkActions" code={TableExampleRaw}>
+            <TableExample/>
+          </CodeExample>
+        </div>
+      </div>
     </div>
   )
 
