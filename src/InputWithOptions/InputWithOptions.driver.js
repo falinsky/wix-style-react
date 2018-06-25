@@ -19,6 +19,7 @@ const inputWithOptionsDriverFactory = ({element, wrapper, component}) => {
     pressUpKey: () => inputDriver.keyDown('ArrowUp'),
     pressAnyKey: () => inputDriver.keyDown('Any'),
     pressEnterKey: () => inputDriver.keyDown('Enter'),
+    pressSpaceKey: () => inputDriver.keyDown(' '),
     pressTabKey: () => inputDriver.keyDown('Tab'),
     pressEscKey: () => inputDriver.keyDown('Escape'),
     outsideClick: () => document.body.dispatchEvent(new Event('mouseup', {cancelable: true})),

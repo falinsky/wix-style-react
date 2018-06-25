@@ -41,6 +41,7 @@ const dropdownLayoutDriverFactory = ({element, wrapper, component}) => {
     pressDownKey: () => ReactTestUtils.Simulate.keyDown(element, {key: 'ArrowDown'}),
     pressUpKey: () => ReactTestUtils.Simulate.keyDown(element, {key: 'ArrowUp'}),
     pressEnterKey: () => ReactTestUtils.Simulate.keyDown(element, {key: 'Enter'}),
+    pressSpaceKey: () => ReactTestUtils.Simulate.keyDown(element, {key: ' '}),
     pressTabKey: () => ReactTestUtils.Simulate.keyDown(element, {key: 'Tab'}),
     pressEscKey: () => ReactTestUtils.Simulate.keyDown(element, {key: 'Escape'}),
     optionContentAt: position => doIfOptionExists(position, () => optionAt(position).textContent),
