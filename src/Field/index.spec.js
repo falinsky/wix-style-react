@@ -49,7 +49,7 @@ describe('Field', () => {
         const driver = createDriver(<Field required/>);
         const asterisk = driver.getAsterisk();
         expect(asterisk.innerHTML).toEqual('*');
-        expect(asterisk.className).toMatch(styles.asteriskInline);
+        expect(asterisk.attributes['data-hook'].value).toEqual('field-asterisk-inline');
       });
     });
   });
@@ -77,7 +77,7 @@ describe('Field', () => {
       it('should render inline', () => {
         const driver = createDriver(<Field info="hello"/>);
         const infoIcon = driver.getInfoIcon();
-        expect(infoIcon.className).toMatch(styles.infoIconInline);
+        expect(infoIcon.attributes['data-hook'].value).toEqual('field-infoicon-inline');
       });
     });
   });

@@ -5,13 +5,10 @@
   flex-wrap: wrap;
 }
 
-.heading {
+.label {
   display: flex;
   align-items: center;
   flex: 1 0 auto;
-}
-
-.label {
   margin-bottom: 6px;
 }
 
@@ -27,21 +24,25 @@
 .asterisk {
   display: inline-block;
   color: $B20;
-  font-size: 20px;
+  font-size: 22px;
   margin-left: 6px;
   margin-top: -4px;
 }
 
-.asteriskInline {
-}
-
 .infoIcon {
-  display: inline-block;
   color: $B20;
-  vertical-align: middle;
+  margin-left: 3px;
+  height: 24px;
 }
 
-.infoIconInline {
-  display: inline-flex;
-  align-items: center;
+.suffixesInline {
+  display: flex;
+
+  .asterisk {
+    margin-top: 3px;
+  }
+
+  .infoIcon {
+    margin-top: 5px;
+  }
 }

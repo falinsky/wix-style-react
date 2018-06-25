@@ -4,13 +4,13 @@ const find = (element, query) =>
   element.querySelector(query);
 
 const getInfoIcon = element =>
-  element.querySelector('[data-hook="field-infoicon"]');
+  element.querySelector('[data-hook^="field-infoicon"]');
 
 const fieldDriver = ({component, element}) => ({
   component: () => component,
-  getChildren: () => find(element, '[data-hook="field-children"]'),
-  getLabel: () => element.querySelector('[data-hook="field-label"]'),
-  getAsterisk: () => element.querySelector('[data-hook="field-asterisk"]'),
+  getChildren: () => find(element, '[data-hook^="field-children"]'),
+  getLabel: () => element.querySelector('[data-hook^="field-label"]'),
+  getAsterisk: () => element.querySelector('[data-hook^="field-asterisk"]'),
   getInfoIcon: () => getInfoIcon(element),
   getInfoTooltip: () =>
     tooltipTestkitFactory({
