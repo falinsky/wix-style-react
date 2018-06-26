@@ -14,6 +14,10 @@ Types of changes:
 
 ## next
 
+### Changed
+
+- `<DataTable/>` - Make `columns` prop required [#1898](https://github.com/wix/wix-style-react/pull/1898)
+
 ## 4.4.0 - 2018-06-26
 ### Added
 - `<Notification/>` - Make component accessible for screen readers [1837](https://github.com/wix/wix-style-react/pull/1837)
