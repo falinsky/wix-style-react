@@ -158,47 +158,8 @@ class Tooltip extends WixComponent {
     this.props.onClickOutside && this.props.onClickOutside(e);
   }
 
-
   componentDidUpdate() {
-    if (this._mountNode && this.state.visible) {
-      const arrowPlacement = {top: 'bottom', left: 'right', right: 'left', bottom: 'top'};
-      const position = this.props.relative ? 'relative' : 'absolute';
-      const tooltip = (
-        <TooltipContent
-          onMouseEnter={() => this._onTooltipContentEnter()}
-          onMouseLeave={() => this._onTooltipContentLeave()}
-          ref={ref => {
-            if (this.props.relative) {
-              this.tooltipContent = ref.tooltip;
-            } else {
-              this.tooltipContent = ref;
-            }
-          }}
-          showImmediately={this.props.showImmediately}
-          theme={this.props.theme}
-          bounce={this.props.bounce}
-          arrowPlacement={arrowPlacement[this.props.placement]}
-          style={{zIndex: this.props.zIndex, position}}
-          padding={this.props.padding}
-          arrowStyle={this.state.arrowStyle}
-          maxWidth={this.props.maxWidth}
-          minWidth={this.props.minWidth}
-          size={this.props.size}
-          textAlign={this.props.textAlign}
-          lineHeight={this.props.lineHeight}
-          color={this.props.color}
-          >
-          {this.props.content}
-        </TooltipContent>);
-
-      renderSubtreeIntoContainer(this, tooltip, this._mountNode);
-
-      if (this.props.shouldUpdatePosition) {
-        setTimeout(() => {
-          this._updatePosition(this.tooltipContent);
-        });
-      }
-    }
+    this.renderTooltipIntoContainer();
   }
 
   componentWillUnmount() {
@@ -230,6 +191,48 @@ class Tooltip extends WixComponent {
         if (nextProps.active && !nextProps.disabled) {
           this.show(nextProps);
         }
+      }
+    }
+  }
+
+  renderTooltipIntoContainer(onSubtreeRendered) {
+    if (this._mountNode && this.state.visible) {
+      const arrowPlacement = {top: 'bottom', left: 'right', right: 'left', bottom: 'top'};
+      const position = this.props.relative ? 'relative' : 'absolute';
+      const tooltip = (
+        <TooltipContent
+          onMouseEnter={() => this._onTooltipContentEnter()}
+          onMouseLeave={() => this._onTooltipContentLeave()}
+          ref={ref => {
+            if (this.props.relative) {
+              this.tooltipContent = ref.tooltip;
+            } else {
+              this.tooltipContent = ref;
+            }
+          }}
+          showImmediately={this.props.showImmediately}
+          theme={this.props.theme}
+          bounce={this.props.bounce}
+          arrowPlacement={arrowPlacement[this.props.placement]}
+          style={{zIndex: this.props.zIndex, position}}
+          padding={this.props.padding}
+          arrowStyle={this.state.arrowStyle}
+          maxWidth={this.props.maxWidth}
+          minWidth={this.props.minWidth}
+          size={this.props.size}
+          textAlign={this.props.textAlign}
+          lineHeight={this.props.lineHeight}
+          color={this.props.color}
+          >
+          {this.props.content}
+        </TooltipContent>);
+
+      renderSubtreeIntoContainer(this, tooltip, this._mountNode, onSubtreeRendered);
+
+      if (this.props.shouldUpdatePosition) {
+        setTimeout(() => {
+          this._updatePosition(this.tooltipContent);
+        });
       }
     }
   }
@@ -305,11 +308,15 @@ class Tooltip extends WixComponent {
           let fw = 0;
           let sw = 0;
           do {
-            this.componentDidUpdate();
-            const tooltipNode = ReactDOM.findDOMNode(this.tooltipContent);
-            fw = this._getRect(tooltipNode).width;
-            this._updatePosition(this.tooltipContent);
-            sw = this._getRect(tooltipNode).width;
+            // TODO migrate to React Portals
+            this.renderTooltipIntoContainer(() => {// eslint-disable-line no-loop-func
+              const tooltipNode = ReactDOM.findDOMNode(this.tooltipContent);
+              if (tooltipNode) {
+                fw = this._getRect(tooltipNode).width;
+                this._updatePosition(this.tooltipContent);
+                sw = this._getRect(tooltipNode).width;
+              }
+            });
           } while (!props.appendToParent && fw !== sw);
         });
       }, delay);
