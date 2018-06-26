@@ -378,7 +378,7 @@ DataTable.propTypes = {
     sortable: PropTypes.bool,
     infoTooltipProps: PropTypes.shape(omit(Tooltip.propTypes, ['moveBy', 'dataHook'])),
     sortDescending: PropTypes.bool
-  })),
+  })).isRequired,
   /** Should the table show the header when data is empty */
   showHeaderWhenEmpty: PropTypes.bool,
   /** A string data-hook to apply to all table body rows. or a func which calculates the data-hook for each row  - Signature: `(rowData, rowNum) => string` */
