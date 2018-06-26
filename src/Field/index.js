@@ -6,6 +6,7 @@ import Text from 'wix-style-react/Text';
 import Tooltip from 'wix-style-react/Tooltip';
 import InfoCircle from 'wix-ui-icons-common/InfoCircle';
 
+import MaxLengthCounter from './components/max-length-counter';
 import styles from './styles.scss';
 
 const asterisk = ({isInline} = {}) =>
@@ -45,24 +46,6 @@ const renderChildren = ({children, value, onChange}) => {
   return children;
 };
 
-const maxLengthCounter = ({maxLength, value, valueLength}) => {
-  const count = typeof value === 'string' ? maxLength - (valueLength || value.length) : maxLength;
-
-  return (
-    <div
-      className={styles.counter}
-      data-hook="field-counter"
-      >
-      <Text
-        size="small"
-        skin={count > 0 ? 'standard' : 'error'}
-        secondary
-        children={count}
-        />
-    </div>
-  );
-};
-
 const Field = ({children, label, required, info, dataHook, value, valueLength, onChange, maxLength}) =>
   <div
     data-hook={dataHook}
@@ -77,7 +60,7 @@ const Field = ({children, label, required, info, dataHook, value, valueLength, o
 
         { required && asterisk() }
         { info && infoIcon({content: info}) }
-        { maxLength && maxLengthCounter({maxLength, value, valueLength}) }
+        { maxLength && <MaxLengthCounter {...{maxLength, value, valueLength}}/> }
       </div>
     }
 
