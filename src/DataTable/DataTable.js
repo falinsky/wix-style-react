@@ -375,7 +375,7 @@ DataTable.propTypes = {
     sortable: PropTypes.bool,
     infoTooltipProps: PropTypes.shape(omit(Tooltip.propTypes, ['moveBy', 'dataHook'])),
     sortDescending: PropTypes.bool
-  })),
+  })).isRequired,
   showHeaderWhenEmpty: PropTypes.bool,
   rowDataHook: PropTypes.oneOfType([
     PropTypes.func,
