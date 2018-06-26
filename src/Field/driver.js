@@ -14,6 +14,7 @@ const fieldDriver = ({component, element}) => ({
   getLabel: () => findByHook(element, 'field-label'),
   getAsterisk: () => findByHook(element, 'field-asterisk'),
   getInfoIcon: () => getInfoIcon(element),
+  getCounter: () => findByHook(element, 'field-counter'),
   getInfoTooltip: () =>
     tooltipTestkitFactory({
       wrapper: getInfoIcon(element),

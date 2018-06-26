@@ -18,21 +18,27 @@ const childrenExamples = [
   }
 ];
 
+const isString = value => typeof value === 'string';
+
 export default {
   category: '12. Other',
   storyName: '12.6 Field',
   component: Field,
   componentPath: '../src/Field',
 
-  componentProps: {
+  componentProps: setState => ({
     dataHook: 'storybook-field',
     children: childrenExamples[0].value,
     label: 'This is an input:',
     required: true,
-    info: 'I help you to fill info'
-  },
+    info: 'I help you to fill info',
+    value: '',
+    onChange: e => setState({value: isString(e) ? e : e.target.value}),
+    maxLength: 100
+  }),
 
   exampleProps: {
-    children: childrenExamples
+    children: childrenExamples,
+    onChange: e => JSON.stringify(isString(e) ? e : e.target.value, null, 2)
   }
 };

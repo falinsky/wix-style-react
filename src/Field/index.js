@@ -45,8 +45,25 @@ const renderChildren = ({children, value, onChange}) => {
   return children;
 };
 
+const maxLengthCounter = ({maxLength, value, valueLength}) => {
+  const count = typeof value === 'string' ? maxLength - (valueLength || value.length) : maxLength;
 
-const Field = ({children, label, required, info, dataHook, value, onChange}) =>
+  return (
+    <div
+      className={styles.counter}
+      data-hook="field-counter"
+      >
+      <Text
+        size="small"
+        skin={count > 0 ? 'standard' : 'error'}
+        secondary
+        children={count}
+        />
+    </div>
+  );
+};
+
+const Field = ({children, label, required, info, dataHook, value, valueLength, onChange, maxLength}) =>
   <div
     data-hook={dataHook}
     className={styles.root}
@@ -60,6 +77,7 @@ const Field = ({children, label, required, info, dataHook, value, onChange}) =>
 
         { required && asterisk() }
         { info && infoIcon({content: info}) }
+        { maxLength && maxLengthCounter({maxLength, value, valueLength}) }
       </div>
     }
 
@@ -86,7 +104,9 @@ Field.propTypes = {
   info: PropTypes.node,
   dataHook: PropTypes.string,
   value: PropTypes.any,
-  onChange: PropTypes.func
+  valueLength: PropTypes.number,
+  onChange: PropTypes.func,
+  maxLength: PropTypes.number
 };
 Field.defaultProps = {};
 

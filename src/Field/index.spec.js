@@ -106,6 +106,39 @@ describe('Field', () => {
     });
   });
 
+  describe('`maxLength` prop', () => {
+    describe('without `label` prop', () => {
+      it('should not display value limit counter', () => {
+        const driver = createDriver(<Field maxLength={10}/>);
+        expect(driver.getCounter()).toEqual(null);
+      });
+    });
+
+    describe('with `label` prop', () => {
+      it('should display value limit counter', () => {
+        const driver = createDriver(<Field label="hello" maxLength={87987}/>);
+        expect(driver.getCounter().innerHTML).toMatch('87987');
+      });
+
+      it('should display result of maxLength - value.length', () => {
+        const driver = createDriver(<Field label="hello" value="12345" maxLength={87987}/>);
+        expect(driver.getCounter().innerHTML).toMatch('87982');
+      });
+
+      it('should display with skin="error" when result < 0', () => {
+        const driver = createDriver(<Field label="hello" value="12345" maxLength={4}/>);
+        expect(driver.getCounter().innerHTML).toMatch('skin="error"'); // TODO: use Text testkit from wix-ui-backoffice
+      });
+    });
+  });
+
+  describe('`valueLength` prop', () => {
+    it('should be used instead of `value.length` when defined', () => {
+      const driver = createDriver(<Field label="hello" value="12345" valueLength={54327} maxLength={5}/>);
+      expect(driver.getCounter().innerHTML).toMatch('-54322');
+    });
+  });
+
   describe('testkits', () => {
     it('should exist', () => {
       expect(isTestkitExists(<Field/>, fieldTestkitFactory)).toBe(true);
