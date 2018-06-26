@@ -195,7 +195,7 @@ class Tooltip extends WixComponent {
     }
   }
 
-  renderTooltipIntoContainer(onSubtreeRendered) {
+  renderTooltipIntoContainer = () => {
     if (this._mountNode && this.state.visible) {
       const arrowPlacement = {top: 'bottom', left: 'right', right: 'left', bottom: 'top'};
       const position = this.props.relative ? 'relative' : 'absolute';
@@ -227,7 +227,7 @@ class Tooltip extends WixComponent {
           {this.props.content}
         </TooltipContent>);
 
-      renderSubtreeIntoContainer(this, tooltip, this._mountNode, onSubtreeRendered);
+      renderSubtreeIntoContainer(this, tooltip, this._mountNode);
 
       if (this.props.shouldUpdatePosition) {
         setTimeout(() => {
@@ -305,18 +305,16 @@ class Tooltip extends WixComponent {
           }
           this._showTimeout = null;
 
+          this.renderTooltipIntoContainer();
           let fw = 0;
           let sw = 0;
           do {
-            // TODO migrate to React Portals
-            this.renderTooltipIntoContainer(() => {// eslint-disable-line no-loop-func
-              const tooltipNode = ReactDOM.findDOMNode(this.tooltipContent);
-              if (tooltipNode) {
-                fw = this._getRect(tooltipNode).width;
-                this._updatePosition(this.tooltipContent);
-                sw = this._getRect(tooltipNode).width;
-              }
-            });
+            const tooltipNode = ReactDOM.findDOMNode(this.tooltipContent);
+            if (tooltipNode) {
+              fw = this._getRect(tooltipNode).width;
+              this._updatePosition(this.tooltipContent);
+              sw = this._getRect(tooltipNode).width;
+            }
           } while (!props.appendToParent && fw !== sw);
         });
       }, delay);
