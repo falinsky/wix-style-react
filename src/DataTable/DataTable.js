@@ -364,8 +364,11 @@ DataTable.defaultProps = {
 };
 
 DataTable.propTypes = {
+  /** An id to pass to the table */
   id: PropTypes.string,
+  /** The data to display. (If data.id exists then it will be used as the React key value for each row, otherwise, the rowIndex will be used) */
   data: validateData,
+  /** Configuration of the table's columns. See table below */
   columns: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.oneOfType([
       PropTypes.node,
@@ -376,24 +379,40 @@ DataTable.propTypes = {
     infoTooltipProps: PropTypes.shape(omit(Tooltip.propTypes, ['moveBy', 'dataHook'])),
     sortDescending: PropTypes.bool
   })),
+  /** Should the table show the header when data is empty */
   showHeaderWhenEmpty: PropTypes.bool,
+  /** A string data-hook to apply to all table body rows. or a func which calculates the data-hook for each row  - Signature: `(rowData, rowNum) => string` */
   rowDataHook: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.string
   ]),
+  /** A class to apply to all table body rows */
   rowClass: PropTypes.string,
+  /** A func that gets row data and returns a class(es) to apply to that specific row */
   dynamicRowClass: PropTypes.func,
+  /** A callback method to be called on row click. Signature: `onRowClick(rowData, rowNum)` */
   onRowClick: PropTypes.func,
+  /** A callback method to be called on row mouse enter. Signature: `onMouseEnterRow(rowData, rowNum)` */
   onMouseEnterRow: PropTypes.func,
+  /** A callback method to be called on row mouse leave. Signature: `onMouseLeaveRow(rowData, rowNum)` */
   onMouseLeaveRow: PropTypes.func,
+  /** If true, table will not render all data to begin with, but will gradually render the data as the user scrolls */
   infiniteScroll: PropTypes.bool,
+  /** If infiniteScroll is on, this prop will determine how many rows will be rendered on each load */
   itemsPerPage: PropTypes.number,
+  /** The width of the fixed table. Can be in percentages or pixels. */
   width: PropTypes.string,
+  /** A callback when more items are requested by the user. */
   loadMore: PropTypes.func,
+  /** Whether there are more items to be loaded. Event listeners are removed if false. */
   hasMore: PropTypes.bool,
+  /** The loader to show when loading more items. */
   loader: PropTypes.node,
+  /** Add scroll listeners to the window, or else, the component's parentNode. */
   useWindow: PropTypes.bool,
+  /** Add scroll listeners to specified DOM Object. */
   scrollElement: PropTypes.object,
+  /** Table cell vertical padding. should be 'medium' or 'large'  */
   rowVerticalPadding: PropTypes.oneOf([
     'medium',
     'large'
@@ -426,10 +445,17 @@ DataTable.propTypes = {
    * @deprecated
    */
   thBoxShadow: PropTypes.string,
+  /** this prop is deprecated and should not be used
+   * @deprecated
+   */
   thLetterSpacing: PropTypes.string,
+  /** Function that returns React component that will be rendered in row details section. Example: `rowDetails={(row, rowNum) => <MyRowDetailsComponent {...row} />}` */
   rowDetails: PropTypes.func,
+  /** Allows to open multiple row details */
   allowMultiDetailsExpansion: PropTypes.bool,
+  /** Should we hide the header (Titlebar) of the table. */
   hideHeader: PropTypes.bool,
+  /** A flag specifying weather to apply the new layout/design update. Default will change to true in the next major release (version 5.0.0) */
   newDesign: PropTypes.bool
 };
 DataTable.displayName = 'DataTable';
