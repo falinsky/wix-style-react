@@ -1,0 +1,54 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 21px 30px;
+  height: 78px;
+  width: 100%;
+}
+
+@mixin ItemMargin($margin: 12px) {
+  margin-left: $margin;
+  margin-right: $margin;
+  &:first-child {
+    margin-left:0px;
+    margin-right: $margin;
+  }
+
+  &:last-child {
+    margin-left: $margin;
+    margin-right: 0px;
+  }
+}
+
+.itemGroup {
+  display: flex;
+  align-items: center;
+  
+  .positionStart {
+    justify-content: start;
+  }
+  
+  .positionEnd {
+    justify-content: end
+  }
+
+  .item {
+    @include ItemMargin(12px);
+
+    &.layoutButton {
+      @include ItemMargin(0px)
+    }
+  }
+
+  .itemLabel {
+    display: flex;
+    align-items: center;
+    > * {
+      @include ItemMargin(6px);
+    }
+  }
+}
+
+

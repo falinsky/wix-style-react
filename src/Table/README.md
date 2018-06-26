@@ -1,4 +1,4 @@
-# Table
+# `<Table/>`
 
 > A Table component for displaying data, with selection column and header & footer which are aware of the selection state.
 
@@ -67,3 +67,5 @@ interface BulkSelectionContext {
   <Table.Content/>
 </Table>
 ```
+
+# Playground (generated Code section is incomplete!!! See Examples section)

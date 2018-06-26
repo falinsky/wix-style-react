@@ -1,48 +1,67 @@
 import React from 'react';
 import Table from 'wix-style-react/Table';
-import Button from 'wix-style-react/Button';
 import Search from 'wix-style-react/Search';
-import styles from '../../src/Card/Header/Header.scss';
 import s from './Table.story.scss';
 import {storySettings} from './storySettings';
 import CodeExample from 'wix-storybook-utils/CodeExample';
+import {
+  TableToolbar,
+  LeftSide,
+  RightSide,
+  Title,
+  SelectedCount
+} from '../../src/Table/TableToolbar';
 
 import {TableExample} from './TableExample';
 import TableExampleRaw from '!raw-loader!./TableExample';
 
-const defaultHeader = (
-  <div className={styles.header}>
-    <div className={styles.container}>
-      <div data-hook="title" className={styles.title}>
-        <span>Table title</span>
-      </div>
-    </div>
-    <div className={s.actions}>
-      <Search
-        options={[
-          {
-            id: 0,
-            value: 'Red'
-          },
-          {
-            id: 1,
-            value: 'Green'
-          }
-        ]}
-        />
-    </div>
-  </div>);
+const mainHeader = (
+  <TableToolbar>
+    <LeftSide>
+      <Title>My Table</Title>
+    </LeftSide>
+    <RightSide>
+      <Search/>
+    </RightSide>
+  </TableToolbar>
+);
 
-const selectionHeader = numSelected => (
-  <div className={s.actions}>
-    <span>{numSelected} Selected</span>
-    <Button>
-      Bulk Action
-    </Button>
-    <Button>
-      Bulk Action
-    </Button>
-  </div>);
+const bulkSelectionHeader = context => {
+  <div>
+    <SelectedCount>{`${context.getNumSelected()} Selected`}</SelectedCount>
+  </div>;
+};
+
+const childrenWithHeader = (
+  [
+    <Table.Header key="header">
+      {bulkSelectionContext => bulkSelectionContext.getNumSelected() === 0 ?
+         mainHeader : bulkSelectionHeader(bulkSelectionContext)}
+    </Table.Header>,
+    <Table.Content key="content"/>
+  ]
+);
+
+const data = [
+  {firstName: 'Meghan', lastName: 'Bishop'},
+  {firstName: 'Sara', lastName: 'Porter'},
+  {firstName: 'Deborah', lastName: 'Rhodes'},
+  {firstName: 'Walter', lastName: 'Jenning'}
+];
+
+const dataLong = [1, 2, 3, 4, 5].reduce(accum => accum.concat(data), []);
+
+const columnsOption1 = [
+  {title: 'First', render: row => row.firstName},
+  {title: 'Last', render: row => row.lastName}
+];
+
+const columnsOption2 = [
+  {title: 'Row Num', render: (row, rowNum) => rowNum},
+  {title: 'First', render: row => row.firstName},
+  {title: 'Last', render: row => row.lastName},
+  {title: 'Full', render: row => row.firstName + row.lastName}
+];
 
 export default {
   category: storySettings.kind,
@@ -54,21 +73,21 @@ export default {
   componentProps: {
     dataHook: storySettings.dataHook,
     id: 'id',
-    data: [{a: 'value 1', b: 'value 2'}, {a: 'value 3', b: 'value 4'}],
-    columns: [
-      {title: 'Row Num', render: (row, rowNum) => rowNum},
-      {title: 'A', render: row => row.a},
-      {title: 'B', render: row => row.b}
-    ],
+    data,
+    columns: columnsOption1,
     showSelection: true,
-    children: (
-    [
-      <Table.Header key="header">
-        {({getNumSelected}) => getNumSelected() === 0 ? defaultHeader : selectionHeader(getNumSelected())}
-      </Table.Header>,
-      <Table.Content key="content"/>
+    children: <Table.Content/>
+  },
+  exampleProps: {
+    columns: [
+      {label: '2 columns example', value: columnsOption1},
+      {label: '4 columns example', value: columnsOption2}
+    ],
+    children: [{label: 'With Example Header', value: childrenWithHeader}],
+    data: [
+      {label: '4 rows', value: data},
+      {label: '40 rows', value: dataLong}
     ]
-  )
   },
   examples: (
     <div>

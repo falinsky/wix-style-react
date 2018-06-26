@@ -7,9 +7,8 @@ import DataTable, {DataTableHeader} from '../DataTable';
 import WixComponent from '../BaseComponents/WixComponent';
 import Checkbox from '../Checkbox';
 import {BulkSelection, BulkSelectionState, BulkSelectionConsumer} from './BulkSelection';
-import * as TableHeader from './TableHeader';
 
-export {TableHeader};
+export * from './TableToolbar';
 export {BulkSelectionState};
 
 const TableDefaultProps = {
@@ -53,6 +52,20 @@ function createColumns({tableProps, bulkSelectionContext}) {
 
   return tableProps.showSelection ? [createCheckboxColumn(bulkSelectionContext), ...tableProps.columns] : tableProps.columns;
 }
+
+export const TableHeader = props => {
+  return (
+    <div data-hook="table-header">
+      <BulkSelectionConsumer consumerCompName="Table.Header" providerCompName="Table">
+        {props.children}
+      </BulkSelectionConsumer>
+    </div>
+  );
+};
+TableHeader.displayName = 'Table.Header';
+TableHeader.propTypes = {
+  children: any
+};
 
 
 const TableFooter = props => {
@@ -168,7 +181,7 @@ TableContent.defaultProps = {
  */
 export class Table extends WixComponent {
 
-  static Header = TableHeader.TableHeader;
+  static Header = TableHeader;
   static TitleBar = TableTitleBar;
   static Content = TableContent;
   static Footer = TableFooter;
