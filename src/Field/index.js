@@ -31,7 +31,22 @@ const infoIcon = ({content, isInline} = {}) =>
     </Tooltip>
   </div>;
 
-const Field = ({children, label, required, info, dataHook}) =>
+const renderChildren = ({children, value, onChange}) => {
+  if (children && (value || onChange)) {
+    return React.cloneElement(
+      children,
+      {
+        ...(value ? {value} : {}),
+        ...(onChange ? {onChange} : {})
+      }
+    );
+  }
+
+  return children;
+};
+
+
+const Field = ({children, label, required, info, dataHook, value, onChange}) =>
   <div
     data-hook={dataHook}
     className={styles.root}
@@ -51,8 +66,9 @@ const Field = ({children, label, required, info, dataHook}) =>
     <div
       data-hook="field-children"
       className={classnames(styles.children, {[styles.childrenInline]: !label})}
-      children={children}
-      />
+      >
+      {renderChildren({children, value, onChange})}
+    </div>
 
     { !label && (required || info) &&
       <div className={styles.suffixesInline}>
@@ -68,7 +84,9 @@ Field.propTypes = {
   label: PropTypes.node,
   required: PropTypes.bool,
   info: PropTypes.node,
-  dataHook: PropTypes.string
+  dataHook: PropTypes.string,
+  value: PropTypes.any,
+  onChange: PropTypes.func
 };
 Field.defaultProps = {};
 

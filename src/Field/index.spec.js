@@ -86,6 +86,26 @@ describe('Field', () => {
     });
   });
 
+  describe('`value` prop', () => {
+    it('should be proxied to children', () => {
+      const field = mount(<Field value="hello" children={<span/>}/>);
+      expect(field.find('[data-hook="field-children"]').children().prop('value')).toEqual('hello');
+    });
+  });
+
+  describe('`onChange` prop', () => {
+    it('should be proxied to children and invoked when child calls it', () => {
+      const onChange = jest.fn();
+      const Child = ({onChange}) => <div onClick={onChange}/>; // eslint-disable-line react/prop-types
+      const field = mount(<Field onChange={onChange} children={<Child/>}/>);
+      const fieldChildren = field.find('[data-hook="field-children"]').children();
+
+      expect(fieldChildren.prop('onChange')).toEqual(onChange);
+      fieldChildren.simulate('click');
+      expect(onChange.mock.calls.length).toEqual(1);
+    });
+  });
+
   describe('testkits', () => {
     it('should exist', () => {
       expect(isTestkitExists(<Field/>, fieldTestkitFactory)).toBe(true);
