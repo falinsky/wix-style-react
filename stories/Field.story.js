@@ -39,6 +39,6 @@ export default {
 
   exampleProps: {
     children: childrenExamples,
-    onChange: e => JSON.stringify(isString(e) ? e : e.target.value, null, 2)
+    onChange: e => isString(e) ? e : e.target.value
   }
 };

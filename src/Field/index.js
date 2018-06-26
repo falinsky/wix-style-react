@@ -81,16 +81,45 @@ const Field = ({children, label, required, info, dataHook, value, valueLength, o
 
 Field.displayName = 'Field';
 Field.propTypes = {
+  /** any kids to render, should be some form of input. Input, InputArea & RichTextArea work well */
   children: PropTypes.node,
+
+  /** optional text labeling this form field */
   label: PropTypes.node,
+
+  /** whether to display an asterisk (*) or not */
   required: PropTypes.bool,
+
+  /** display info icon with tooltip. Node from this prop is content of tooltip */
   info: PropTypes.node,
-  dataHook: PropTypes.string,
+
+  /** any value to be passed to children element. When string and maxLength is set, it is used to calculate remaining characters */
   value: PropTypes.any,
+
+  /**
+   * custom value length for cases when `value` prop does not represent actual value length.
+   * For example, value may be `<p>Hello</p>` (12 chars) but is displayed as just `Hello` (5 chars)
+   */
   valueLength: PropTypes.number,
+
+  /** optional handler that will be proxied to children.
+   * Mostly for convenience, as it can still be defined on children.
+   *
+   */
   onChange: PropTypes.func,
-  maxLength: PropTypes.number
+
+  /** number used to display remaining characters left. Should be used together with `value` or `valueLength`.
+   * It's `maxLength - valueLength || value.length`.
+   * Please note this does not validate data because there can be any type of children and value
+   */
+  maxLength: PropTypes.number,
+
+  /** used for testing */
+  dataHook: PropTypes.string
 };
-Field.defaultProps = {};
+
+Field.defaultProps = {
+  required: false
+};
 
 export default Field;
