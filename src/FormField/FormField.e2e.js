@@ -1,9 +1,9 @@
 import eyes from 'eyes.it';
-import {fieldTestkitFactory, getStoryUrl, waitForVisibilityOf} from '../../testkit/protractor';
+import {formFieldTestkitFactory, getStoryUrl, waitForVisibilityOf} from '../../testkit/protractor';
 import autoExampleDriver from 'wix-storybook-utils/AutoExampleDriver';
 
 const storyUrl = getStoryUrl('12. Other', '12.6 FormField');
-const driver = fieldTestkitFactory({dataHook: 'storybook-formfield'});
+const driver = formFieldTestkitFactory({dataHook: 'storybook-formfield'});
 
 describe('FormField', () => {
   beforeAll(() =>
