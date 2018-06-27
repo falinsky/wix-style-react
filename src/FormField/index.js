@@ -11,7 +11,7 @@ import styles from './styles.scss';
 
 const asterisk = ({isInline} = {}) =>
   <div
-    data-hook={`field-asterisk${isInline ? '-inline' : ''}`}
+    data-hook={`formfield-asterisk${isInline ? '-inline' : ''}`}
     className={styles.asterisk}
     children="*"
     />;
@@ -19,12 +19,12 @@ const asterisk = ({isInline} = {}) =>
 const infoIcon = ({content, isInline} = {}) =>
   <div
     className={styles.infoIcon}
-    data-hook={`field-infoicon${isInline ? '-inline' : ''}`}
+    data-hook={`formfield-infoicon${isInline ? '-inline' : ''}`}
     >
     <Tooltip
       content={content}
       theme="dark"
-      dataHook="field-infotooltip"
+      dataHook="formfield-infotooltip"
       >
       <div>
         <InfoCircle size="24px"/>
@@ -46,7 +46,7 @@ const renderChildren = ({children, value, onChange}) => {
   return children;
 };
 
-const Field = ({children, label, required, info, dataHook, value, valueLength, onChange, maxLength}) =>
+const FormField = ({children, label, required, info, dataHook, value, valueLength, onChange, maxLength}) =>
   <div
     data-hook={dataHook}
     className={styles.root}
@@ -54,7 +54,7 @@ const Field = ({children, label, required, info, dataHook, value, valueLength, o
     { label &&
       <div
         className={styles.label}
-        data-hook="field-label"
+        data-hook="formfield-label"
         >
         <Text appearance="T1" children={label}/>
 
@@ -65,7 +65,7 @@ const Field = ({children, label, required, info, dataHook, value, valueLength, o
     }
 
     <div
-      data-hook="field-children"
+      data-hook="formfield-children"
       className={classnames(styles.children, {[styles.childrenInline]: !label})}
       >
       {renderChildren({children, value, onChange})}
@@ -79,8 +79,8 @@ const Field = ({children, label, required, info, dataHook, value, valueLength, o
     }
   </div>;
 
-Field.displayName = 'Field';
-Field.propTypes = {
+FormField.displayName = 'FormField';
+FormField.propTypes = {
   /** any kids to render, should be some form of input. Input, InputArea & RichTextArea work well */
   children: PropTypes.node.isRequired,
 
@@ -118,8 +118,8 @@ Field.propTypes = {
   dataHook: PropTypes.string
 };
 
-Field.defaultProps = {
+FormField.defaultProps = {
   required: false
 };
 
-export default Field;
+export default FormField;

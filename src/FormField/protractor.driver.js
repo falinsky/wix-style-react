@@ -1,7 +1,5 @@
-const find = component => selector => component.$(selector);
-
 const fieldDriverFactory = component => {
-  const byHook = hook => find(component)(`[data-hook*=${hook}]`);
+  const byHook = hook => component.$(`[data-hook*=${hook}]`);
 
   return {
     element: () => component,

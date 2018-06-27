@@ -11,7 +11,7 @@ const maxLengthCounter = ({maxLength, value, valueLength}) => {
   return (
     <div
       className={styles.counter}
-      data-hook="field-counter"
+      data-hook="formfield-counter"
       >
       <Text
         size="small"

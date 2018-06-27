@@ -201,8 +201,8 @@ export const modalSelectorLayoutTestkitFactory = enzymeTestkitFactoryCreator(mod
 import sectionHelperDriverFactory from '../src/SectionHelper/SectionHelper.driver';
 export const sectionHelperTestkitFactory = enzymeTestkitFactoryCreator(sectionHelperDriverFactory);
 
-import fieldDriverFactory from '../src/Field/driver';
-export const fieldTestkitFactory = enzymeTestkitFactoryCreator(fieldDriverFactory);
+import formFieldDriverFactory from '../src/FormField/driver';
+export const formFieldTestkitFactory = enzymeTestkitFactoryCreator(formFieldDriverFactory);
 
 // wix-ui-backoffice proxy
 

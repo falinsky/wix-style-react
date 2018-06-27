@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Field from 'wix-style-react/Field';
+import FormField from 'wix-style-react/FormField';
 import Input from 'wix-style-react/Input';
 import InputArea from 'wix-style-react/InputArea';
 import RichTextArea from 'wix-style-react/RichTextArea';
@@ -22,12 +22,12 @@ const isString = value => typeof value === 'string';
 
 export default {
   category: '12. Other',
-  storyName: '12.6 Field',
-  component: Field,
-  componentPath: '../src/Field',
+  storyName: '12.6 FormField',
+  component: FormField,
+  componentPath: '../src/FormField',
 
   componentProps: setState => ({
-    dataHook: 'storybook-field',
+    dataHook: 'storybook-formfield',
     children: childrenExamples[0].value,
     label: 'This is an input:',
     required: true,
