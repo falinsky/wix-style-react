@@ -48,13 +48,14 @@ export class TablePageExample extends React.Component {
               {title: 'Inventory', render: row => <span>{row.inventory}</span>, width: '20%', minWidth: '100px'}
           ]}
           showSelection
+          onSelectionChange={selectedIds => console.log('Table.onSelectionChange(): selectedIds=', selectedIds)}
           >
           <Page>
             <Page.Header title="My Table Title"/>
             <Page.Tail>
               <Card>
                 <Table.Header>
-                  { context => renderMyTableHeader(context) }
+                  { renderMyTableHeader }
                 </Table.Header>
                 <Table.Titlebar/>
               </Card>

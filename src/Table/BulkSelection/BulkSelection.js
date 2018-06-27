@@ -23,7 +23,8 @@ export class BulkSelection extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedIds: (props.selectedIds || []).slice()
+      selectedIds: (props.selectedIds || []).slice(),
+      helpers: this.createHelpers()
     };
   }
 
@@ -48,7 +49,7 @@ export class BulkSelection extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const newState = BulkSelection._getDerivedStateFromProps(nextProps, this.state);
-    newState && this.setState(newState);
+    newState && this.setSelectedIds(newState.selectedIds);
     //TODO: should we call the onSelectionChanged callback here?
   }
 
@@ -76,6 +77,7 @@ export class BulkSelection extends React.Component {
   }
 
   toggleSelectionById = id => {
+    console.log('toggleSelectionById: ', id);
     this.setSelectedIds(
       this.isSelected(id) ?
       this.state.selectedIds.filter(_id => _id !== id) :
@@ -87,29 +89,33 @@ export class BulkSelection extends React.Component {
     if (!Array.isArray(selectedIds)) {
       throw new Error('selectedIds must be an array');
     }
-    this.setState({selectedIds}, () => {
+    console.log('BulkSelection.setSelectedIds():', selectedIds);
+    this.setState({selectedIds, helpers: this.createHelpers()}, () => {
       this.props.onSelectionChanged && this.props.onSelectionChanged(selectedIds.slice());
     });
   }
 
-  stateAndHelpers = {
-    // Getters
-    isAnySelected: () => this.getSelectedCount() > 0,
-    getBulkSelectionState: () => this.getBulkSelectionState(),
-    getNumSelected: () => this.getSelectedCount(),
-    isSelected: this.isSelected,
-    // Modifiers
-    toggleSelectionById: this.toggleSelectionById,
-    toggleBulkSelection: this.toggleBulkSelection,
-    selectAll: () => this.toggleAll(true),
-    deselectAll: () => this.toggleAll(false),
-    setSelectedIds: this.setSelectedIds
-  };
+  createHelpers() {
+    return {
+      // Getters
+      isAnySelected: () => this.getSelectedCount() > 0,
+      getBulkSelectionState: () => this.getBulkSelectionState(),
+      getNumSelected: () => this.getSelectedCount(),
+      isSelected: this.isSelected,
+
+      // Modifiers
+      toggleSelectionById: this.toggleSelectionById,
+      toggleBulkSelection: this.toggleBulkSelection,
+      selectAll: () => this.toggleAll(true),
+      deselectAll: () => this.toggleAll(false),
+      setSelectedIds: this.setSelectedIds
+    };
+  }
 
   render() {
     return (
       <BulkSelectionContext.Provider
-        value={this.stateAndHelpers}
+        value={this.state.helpers}
         >
         {this.props.children}
       </BulkSelectionContext.Provider>
