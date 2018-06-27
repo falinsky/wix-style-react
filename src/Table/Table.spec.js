@@ -268,7 +268,7 @@ describe('Table', () => {
         );
       expect(!!driver.getHeader()).toBeFalsy();
       expect(!!driver.getFooter()).toBeFalsy();
-      expect(!!driver.getTitleBar()).toBeFalsy();
+      expect(!!driver.getTitlebar()).toBeFalsy();
     });
 
     it('should have Table.Header with BulkSelectionContext', () => {
@@ -305,7 +305,7 @@ describe('Table', () => {
       expect(driver.getFooter().textContent).toBe('2 Selected');
     });
 
-    it('should have Table.TitleBar', () => {
+    it('should have Table.Titlebar', () => {
       const driver = createDriver(
         <Table
           {...defaultProps}
@@ -313,14 +313,14 @@ describe('Table', () => {
           selectedIds={allSelected()}
           >
           <div>
-            <Table.TitleBar/>
+            <Table.Titlebar/>
           </div>
           <div>
             <Table.Content titleBarVisible={false}/>
           </div>
         </Table>
         );
-      expect(!!driver.getTitleBar()).toBeTruthy();
+      expect(!!driver.getTitlebar()).toBeTruthy();
       expect(driver.isBulkSelectionCheckboxVisible()).toBeTruthy();
     });
   });

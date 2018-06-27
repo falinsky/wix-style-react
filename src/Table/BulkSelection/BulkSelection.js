@@ -39,18 +39,11 @@ export class BulkSelection extends React.Component {
       numOfSelected === numOfItems ? BulkSelectionState.ALL : BulkSelectionState.SOME;
   }
 
-  // This method is equivilant to the React 16 Lifecycle method getDerivedStateFromProps
-  static _getDerivedStateFromProps(props, state) {
-    if (!props.selectedIds) {
-      return null;
-    }
-    return isEqual(props.selectedIds, state.selectedIds) ? null : {selectedIds: props.selectedIds.slice()};
-  }
-
   componentWillReceiveProps(nextProps) {
-    const newState = BulkSelection._getDerivedStateFromProps(nextProps, this.state);
-    newState && this.setSelectedIds(newState.selectedIds);
-    //TODO: should we call the onSelectionChanged callback here?
+    if (!nextProps.selectedIds || isEqual(nextProps.selectedIds, this.state.selectedIds)) {
+      return;
+    }
+    this.setSelectedIds(nextProps.selectedIds.slice());
   }
 
   toggleAll = enable => {
@@ -77,7 +70,6 @@ export class BulkSelection extends React.Component {
   }
 
   toggleSelectionById = id => {
-    console.log('toggleSelectionById: ', id);
     this.setSelectedIds(
       this.isSelected(id) ?
       this.state.selectedIds.filter(_id => _id !== id) :
@@ -89,7 +81,6 @@ export class BulkSelection extends React.Component {
     if (!Array.isArray(selectedIds)) {
       throw new Error('selectedIds must be an array');
     }
-    console.log('BulkSelection.setSelectedIds():', selectedIds);
     this.setState({selectedIds, helpers: this.createHelpers()}, () => {
       this.props.onSelectionChanged && this.props.onSelectionChanged(selectedIds.slice());
     });

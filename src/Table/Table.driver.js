@@ -4,7 +4,7 @@ import checkboxDriverFactory from '../Checkbox/Checkbox.driver';
 const tableDriverFactory = ({element, wrapper, component, eventTrigger}) => {
   const dataTableDriver = dataTableDriverFactory({element, wrapper, component});
   const getHeader = () => element.querySelector('[data-hook="table-header"]');
-  const getTitleBar = () => element.querySelector('[data-hook="table-title-bar"]');
+  const getTitlebar = () => element.querySelector('[data-hook="table-title-bar"]');
   const getFooter = () => element.querySelector('[data-hook="table-footer"]');
   const getRowCheckboxDriver = index => checkboxDriverFactory({
     element: dataTableDriver.getCell(index, 0).querySelector('[data-hook="row-select"]'),
@@ -36,7 +36,7 @@ const tableDriverFactory = ({element, wrapper, component, eventTrigger}) => {
     },
     getHeader,
     getFooter,
-    getTitleBar
+    getTitlebar
   };
 };
 
