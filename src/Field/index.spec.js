@@ -15,7 +15,7 @@ const createDriver = createDriverFactory(fieldDriverFactory);
 
 describe('Field', () => {
   it('should pass sanity check', () => {
-    const driver = createDriver(<Field/>);
+    const driver = createDriver(<Field><div/></Field>);
 
     const component = driver.component();
     expect(component.type.displayName).toEqual('Field');
@@ -30,12 +30,12 @@ describe('Field', () => {
 
   describe('`label` prop', () => {
     it('should be rendered with Text component', () => {
-      const driver = createDriver(<Field label="hello label"/>);
+      const driver = createDriver(<Field label="hello label"><div/></Field>);
       expect(driver.getLabel().innerHTML).toMatch(/Text.*hello label/);
     });
 
     it('should not render div when `label` is undefined', () => {
-      const driver = createDriver(<Field/>);
+      const driver = createDriver(<Field><div/></Field>);
       expect(driver.getLabel()).toEqual(null);
     });
   });
@@ -43,30 +43,35 @@ describe('Field', () => {
   describe('required asterisk', () => {
     describe('given `label` and `required` props', () => {
       it('should render asterisk', () => {
-        const driver = createDriver(<Field label="hello" required/>);
+        const driver = createDriver(<Field label="hello" required><div/></Field>);
         expect(driver.getAsterisk().innerHTML).toEqual('*');
       });
     });
 
     describe('given only `required` prop', () => {
       it('should render it inline', () => {
-        const driver = createDriver(<Field required/>);
+        const driver = createDriver(<Field required><div/></Field>);
         const asterisk = driver.getAsterisk();
         expect(asterisk.innerHTML).toEqual('*');
         expect(asterisk.attributes['data-hook'].value).toEqual('field-asterisk-inline');
       });
+    });
+
+    it('should not render when `required` prop', () => {
+      const driver = createDriver(<Field><div/></Field>);
+      expect(driver.getAsterisk()).toEqual(null);
     });
   });
 
   describe('`info` icon', () => {
     describe('given `label`', () => {
       it('should render it', () => {
-        const driver = createDriver(<Field info="hello" label="hello"/>);
+        const driver = createDriver(<Field info="hello" label="hello"><div/></Field>);
         expect(driver.getInfoIcon()).not.toEqual(null);
       });
 
       it('should display value of `info` in tooltip', () => {
-        const driver = createDriver(<Field info="hello from tooltip"/>);
+        const driver = createDriver(<Field info="hello from tooltip"><div/></Field>);
         const tooltip = driver.getInfoTooltip();
 
         tooltip.mouseEnter();
@@ -79,7 +84,7 @@ describe('Field', () => {
 
     describe('given only `info` prop', () => {
       it('should render inline', () => {
-        const driver = createDriver(<Field info="hello"/>);
+        const driver = createDriver(<Field info="hello"><div/></Field>);
         const infoIcon = driver.getInfoIcon();
         expect(infoIcon.attributes['data-hook'].value).toEqual('field-infoicon-inline');
       });
@@ -109,24 +114,24 @@ describe('Field', () => {
   describe('`maxLength` prop', () => {
     describe('without `label` prop', () => {
       it('should not display value limit counter', () => {
-        const driver = createDriver(<Field maxLength={10}/>);
+        const driver = createDriver(<Field maxLength={10}><div/></Field>);
         expect(driver.getCounter()).toEqual(null);
       });
     });
 
     describe('with `label` prop', () => {
       it('should display value limit counter', () => {
-        const driver = createDriver(<Field label="hello" maxLength={87987}/>);
+        const driver = createDriver(<Field label="hello" maxLength={87987}><div/></Field>);
         expect(driver.getCounter().innerHTML).toMatch('87987');
       });
 
       it('should display result of maxLength - value.length', () => {
-        const driver = createDriver(<Field label="hello" value="12345" maxLength={87987}/>);
+        const driver = createDriver(<Field label="hello" value="12345" maxLength={87987}><div/></Field>);
         expect(driver.getCounter().innerHTML).toMatch('87982');
       });
 
       it('should display with skin="error" when result < 0', () => {
-        const driver = createDriver(<Field label="hello" value="12345" maxLength={4}/>);
+        const driver = createDriver(<Field label="hello" value="12345" maxLength={4}><div/></Field>);
         expect(driver.getCounter().innerHTML).toMatch('skin="error"'); // TODO: use Text testkit from wix-ui-backoffice
       });
     });
@@ -134,18 +139,18 @@ describe('Field', () => {
 
   describe('`valueLength` prop', () => {
     it('should be used instead of `value.length` when defined', () => {
-      const driver = createDriver(<Field label="hello" value="12345" valueLength={54327} maxLength={5}/>);
+      const driver = createDriver(<Field label="hello" value="12345" valueLength={54327} maxLength={5}><div/></Field>);
       expect(driver.getCounter().innerHTML).toMatch('-54322');
     });
   });
 
   describe('testkits', () => {
     it('should exist', () => {
-      expect(isTestkitExists(<Field/>, fieldTestkitFactory)).toBe(true);
+      expect(isTestkitExists(<Field><div/></Field>, fieldTestkitFactory)).toBe(true);
     });
 
     it('should exist for enzyme', () => {
-      expect(isEnzymeTestkitExists(<Field/>, enzymeFieldTestkitFactory, mount)).toBe(true);
+      expect(isEnzymeTestkitExists(<Field><div/></Field>, enzymeFieldTestkitFactory, mount)).toBe(true);
     });
   });
 });

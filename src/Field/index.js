@@ -82,7 +82,7 @@ const Field = ({children, label, required, info, dataHook, value, valueLength, o
 Field.displayName = 'Field';
 Field.propTypes = {
   /** any kids to render, should be some form of input. Input, InputArea & RichTextArea work well */
-  children: PropTypes.node,
+  children: PropTypes.node.isRequired,
 
   /** optional text labeling this form field */
   label: PropTypes.node,
