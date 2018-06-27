@@ -1,3 +1,5 @@
+@import '../../common.scss';
+
 .toolbar {
   display: flex;
   align-items: center;
@@ -49,6 +51,14 @@
       @include ItemMargin(6px);
     }
   }
+}
+
+.divider {
+  height: 36px;
+  width: 1px;
+  margin-left: 18px;
+  margin-right: 17px;
+  background-color: $D60
 }
 
 

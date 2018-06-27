@@ -64,6 +64,10 @@ Item.propTypes = {
   layout: oneOf('button')
 };
 
+/**
+ * Similar to the original WSR Label, but the label is displayed on the same line as the target element (and not above it).
+ * TODO:; we might want to simply add this ability to the existing Label.
+ */
 export const Label = props => {
   return (
     <OriginaLabel {...props} className={s.itemLabel}>
@@ -82,7 +86,14 @@ Label.propTypes = {
   children: any
 };
 
+export const Divider = () => {
+  return <span className={s.divider}/>;
+};
+Divider.displayName = 'Toolbar.Divider';
+
+
 // Aliases for convenience
 Toolbar.ItemGroup = ItemGroup;
 Toolbar.Item = Item;
 Toolbar.Label = Label;
+Toolbar.Divider = Divider;

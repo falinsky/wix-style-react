@@ -6,7 +6,8 @@ import {
   Item,
   Label,
   Title,
-  SelectedCount
+  SelectedCount,
+  Divider
 } from 'wix-style-react/Table';
 
 
@@ -79,6 +80,8 @@ export class TableExample extends React.Component {
               Edit
             </Button>
           </Item>
+          <Divider/>
+          <Search expandable/>
         </ItemGroup>
       </TableToolbar>
     );

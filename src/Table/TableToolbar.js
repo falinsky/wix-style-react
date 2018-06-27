@@ -1,7 +1,7 @@
 import React from 'react';
 import {string} from 'prop-types';
 import typography from '../Typography/Typography.scss';
-import {Toolbar, ItemGroup, Item, Label} from './Toolbar';
+import {Toolbar, ItemGroup, Item, Label, Divider} from './Toolbar';
 export * from './Toolbar'; // eslint-disable-line no-duplicate-imports
 
 export const Title = props => {
@@ -36,3 +36,4 @@ TableToolbar.Item = Item;
 TableToolbar.Label = Label;
 TableToolbar.SelectedCount = SelectedCount;
 TableToolbar.Title = Title;
+TableToolbar.Divider = Divider;
