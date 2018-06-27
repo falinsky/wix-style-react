@@ -182,7 +182,7 @@ TableContent.defaultProps = {
 export class Table extends WixComponent {
 
   static Header = TableHeader;
-  static TitleBar = TableTitleBar;
+  static Titlebar = TableTitleBar;
   static Content = TableContent;
   static Footer = TableFooter;
 
@@ -205,12 +205,17 @@ export class Table extends WixComponent {
     this.bulkSelection.setSelectedIds(selectedIds);
   }
 
+  renderChildren() {
+    const children = this.props.children;
+    return this.props.withWrapper ? (
+      <div>
+        {children}
+      </div>) :
+      children;
+  }
+
   render() {
-    const childrenWithWrapper = (
-      <div> {/* Wrapping with a div in case multiple children are passed*/}
-        {this.props.children}
-      </div>
-    );
+
     return (
       <TableContext.Provider value={this.state}>
         {this.props.showSelection ?
@@ -221,10 +226,10 @@ export class Table extends WixComponent {
             allIds={this.state.data.map((rowData, rowIndex) => defaultTo(rowData.id, rowIndex))}
             onSelectionChanged={this.props.onSelectionChanged}
             >
-            {childrenWithWrapper}
+            {this.renderChildren()}
           </BulkSelection>
         ) :
-        childrenWithWrapper
+        this.renderChildren()
         }
       </TableContext.Provider>
     );
@@ -236,7 +241,8 @@ Table.defaultProps = {
   children:
   [
     <Table.Content key="content"/>
-  ]
+  ],
+  withWrapper: true
 };
 
 Table.propTypes = {
@@ -248,7 +254,11 @@ Table.propTypes = {
      *  If data objects do not have id property, then the data row's index would be used as an id. */
   selectedIds: oneOfType([arrayOf(string), arrayOf(number)]),
   /** Called when row selection changes. Receives the updated selection array as argument. */
-  onSelectionChanged: func
+  onSelectionChanged: func,
+  /**
+   *  When false then Table would not create a `<div/>` wrapper around it's children.
+   *  Useful when using `<Table/>` to wrap a `<Page/>` component, in that case we use the `<Table/>` only as a context provider and it doesn't render anything to the DOM by itself.*/
+  withWrapper: bool
 };
 
 export default Table;

@@ -112,6 +112,7 @@ import '../stories/Tag.story.js'; // 12.5 Tag
 
 // 13. Work in progress
 import '../stories/Table'; // 13.1 Table Card
+import '../stories/TablePageExample'; // 13.1 + Table in Page
 
 // TPA
 import '../stories/TPA/Button';
