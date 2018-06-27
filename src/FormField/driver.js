@@ -12,8 +12,8 @@ const formFieldDriver = ({component, element}) => ({
   component: () => component,
   getChildren: () => findByHook(element, 'formfield-children'),
   getLabel: () => findByHook(element, 'formfield-label'),
-  getAsterisk: () => findByHook(element, 'formfield-asterisk'),
-  getInfoIcon: () => getInfoIcon(element),
+  isRequired: () => !!findByHook(element, 'formfield-asterisk'),
+  isInline: () => !!findByHook(element, 'formfield-inline-suffixes'),
   getCounter: () => findByHook(element, 'formfield-counter'),
   getInfoTooltip: () =>
     tooltipTestkitFactory({

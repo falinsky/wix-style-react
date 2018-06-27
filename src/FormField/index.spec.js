@@ -40,37 +40,40 @@ describe('FormField', () => {
     });
   });
 
-  describe('required asterisk', () => {
+  describe('required', () => {
     describe('given `label` and `required` props', () => {
-      it('should render asterisk', () => {
+      it('should render as required', () => {
         const driver = createDriver(<FormField label="hello" required><div/></FormField>);
-        expect(driver.getAsterisk().innerHTML).toEqual('*');
+        expect(driver.isRequired()).toEqual(true);
       });
     });
 
     describe('given only `required` prop', () => {
       it('should render it inline', () => {
         const driver = createDriver(<FormField required><div/></FormField>);
-        const asterisk = driver.getAsterisk();
-        expect(asterisk.innerHTML).toEqual('*');
-        expect(asterisk.attributes['data-hook'].value).toEqual('formfield-asterisk-inline');
+        expect(driver.isRequired()).toEqual(true);
+        expect(driver.isInline()).toEqual(true);
       });
     });
 
     it('should not render when `required` prop', () => {
       const driver = createDriver(<FormField><div/></FormField>);
-      expect(driver.getAsterisk()).toEqual(null);
+      expect(driver.isRequired()).toEqual(false);
     });
   });
 
-  describe('`info` icon', () => {
+  describe('`info` icon with tooltip', () => {
+    beforeEach(() => {
+      document.body.innerHTML = ''; // required for tooltip element to be removed and not to leak in consecutive tests
+    });
+
     describe('given `label`', () => {
-      it('should render it', () => {
+      it('should be rendered', () => {
         const driver = createDriver(<FormField info="hello" label="hello"><div/></FormField>);
-        expect(driver.getInfoIcon()).not.toEqual(null);
+        expect(driver.getInfoTooltip()).not.toEqual(null);
       });
 
-      it('should display value of `info` in tooltip', () => {
+      it('should display value of `info` prop in tooltip', () => {
         const driver = createDriver(<FormField info="hello from tooltip"><div/></FormField>);
         const tooltip = driver.getInfoTooltip();
 
@@ -83,10 +86,15 @@ describe('FormField', () => {
     });
 
     describe('given only `info` prop', () => {
-      it('should render inline', () => {
-        const driver = createDriver(<FormField info="hello"><div/></FormField>);
-        const infoIcon = driver.getInfoIcon();
-        expect(infoIcon.attributes['data-hook'].value).toEqual('formfield-infoicon-inline');
+      it('should render it inline', () => {
+        const driver = createDriver(<FormField info="hey there"><div/></FormField>);
+        const tooltip = driver.getInfoTooltip();
+
+        expect(driver.isInline()).toEqual(true);
+        tooltip.mouseEnter();
+
+        return resolveIn(500).then(() =>
+          expect(tooltip.getContent()).toBe('hey there'));
       });
     });
   });

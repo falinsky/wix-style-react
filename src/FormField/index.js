@@ -9,17 +9,17 @@ import InfoCircle from 'wix-ui-icons-common/InfoCircle';
 import MaxLengthCounter from './components/max-length-counter';
 import styles from './styles.scss';
 
-const asterisk = ({isInline} = {}) =>
+const asterisk = () =>
   <div
-    data-hook={`formfield-asterisk${isInline ? '-inline' : ''}`}
+    data-hook="formfield-asterisk"
     className={styles.asterisk}
     children="*"
     />;
 
-const infoIcon = ({content, isInline} = {}) =>
+const infoIcon = ({content} = {}) =>
   <div
     className={styles.infoIcon}
-    data-hook={`formfield-infoicon${isInline ? '-inline' : ''}`}
+    data-hook="formfield-infoicon"
     >
     <Tooltip
       content={content}
@@ -72,9 +72,12 @@ const FormField = ({children, label, required, info, dataHook, value, valueLengt
     </div>
 
     { !label && (required || info) &&
-      <div className={styles.suffixesInline}>
-        { required && asterisk({isInline: true}) }
-        { info && infoIcon({content: info, isInline: true}) }
+      <div
+        data-hook="formfield-inline-suffixes"
+        className={styles.suffixesInline}
+        >
+        { required && asterisk() }
+        { info && infoIcon({content: info}) }
       </div>
     }
   </div>;
