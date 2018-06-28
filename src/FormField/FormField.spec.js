@@ -14,13 +14,9 @@ import FormField from './';
 const createDriver = createDriverFactory(formFieldDriverFactory);
 
 describe('FormField', () => {
-  it('should pass sanity check', () => {
-    const driver = createDriver(<FormField><div/></FormField>);
-
-    const component = driver.component();
-    expect(component.type.displayName).toEqual('FormField');
-    expect(component.type.propTypes).not.toEqual(undefined);
-    expect(component.type.defaultProps).not.toEqual(undefined);
+  it('should have correct displayName', () => {
+    const component = mount(<FormField><div/></FormField>);
+    expect(component.name()).toEqual('FormField');
   });
 
   describe('`label` prop', () => {

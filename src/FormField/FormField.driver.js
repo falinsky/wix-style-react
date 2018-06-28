@@ -16,10 +16,9 @@ const getLengthLeft = element => {
   return null;
 };
 
-const formFieldDriver = ({component, element}) => ({
+const formFieldDriver = ({element}) => ({
   exists: () => !!element,
   element: () => element,
-  component: () => component,
   getChildren: () => findByHook(element, 'formfield-children'),
   getLabel: () => findByHook(element, 'formfield-label'),
   isRequired: () => !!findByHook(element, 'formfield-asterisk'),
