@@ -23,11 +23,6 @@ describe('FormField', () => {
     expect(component.type.defaultProps).not.toEqual(undefined);
   });
 
-  it('should render children', () => {
-    const driver = createDriver(<FormField>hello</FormField>);
-    expect(driver.getChildren().innerHTML).toEqual('hello');
-  });
-
   describe('`label` prop', () => {
     it('should be rendered with Text component', () => {
       const driver = createDriver(<FormField label="hello label"><div/></FormField>);
@@ -99,56 +94,62 @@ describe('FormField', () => {
     });
   });
 
-  describe('`value` prop', () => {
-    it('should be proxied to children', () => {
-      const field = mount(<FormField value="hello" children={<span/>}/>);
-      expect(field.find('[data-hook="formfield-children"]').children().prop('value')).toEqual('hello');
-    });
-  });
+  describe('`children` prop', () => {
+    class Children extends React.Component {
+      componentDidMount() {
+        this.props.onMount();
+      }
+      render() {
+        return <div/>;
+      }
+    }
 
-  describe('`onChange` prop', () => {
-    it('should be proxied to children and invoked when child calls it', () => {
-      const onChange = jest.fn();
-      const Child = ({onChange}) => <div onClick={onChange}/>; // eslint-disable-line react/prop-types
-      const field = mount(<FormField onChange={onChange} children={<Child/>}/>);
-      const fieldChildren = field.find('[data-hook="formfield-children"]').children();
-
-      expect(fieldChildren.prop('onChange')).toEqual(onChange);
-      fieldChildren.simulate('click');
-      expect(onChange.mock.calls.length).toEqual(1);
-    });
-  });
-
-  describe('`maxLength` prop', () => {
-    describe('without `label` prop', () => {
-      it('should not display value limit counter', () => {
-        const driver = createDriver(<FormField maxLength={10}><div/></FormField>);
-        expect(driver.getCounter()).toEqual(null);
-      });
+    it('should be rendered', () => {
+      const driver = createDriver(<FormField>hello</FormField>);
+      expect(driver.getChildren().innerHTML).toEqual('hello');
     });
 
-    describe('with `label` prop', () => {
-      it('should display value limit counter', () => {
-        const driver = createDriver(<FormField label="hello" maxLength={87987}><div/></FormField>);
-        expect(driver.getCounter().innerHTML).toMatch('87987');
+    describe('when function', () => {
+      it('should receive setLengthLeft', () => {
+        const children = jest.fn();
+        createDriver(<FormField children={children}/>);
+        expect(typeof children.mock.calls[0][0].setLengthLeft).toBe('function');
       });
 
-      it('should display result of maxLength - value.length', () => {
-        const driver = createDriver(<FormField label="hello" value="12345" maxLength={87987}><div/></FormField>);
-        expect(driver.getCounter().innerHTML).toMatch('87982');
+      describe('with `label` prop', () => {
+        it('should display counter when `setLengthLeft` called', () => {
+          const driver = createDriver(
+            <FormField label="hello">
+              {({setLengthLeft}) =>
+                <Children onMount={() => setLengthLeft(87987)}/>
+              }
+            </FormField>
+          );
+
+          expect(driver.getLengthLeft()).toBe(87987);
+        });
+
+        it('should display with skin="error" when result < 0', () => {
+          const driver = createDriver(
+            <FormField label="hello">
+              {({setLengthLeft}) => <Children onMount={() => setLengthLeft(-1)}/>}
+            </FormField>
+          );
+
+          expect(driver.isLengthExceeded()).toBe(true);
+        });
       });
 
-      it('should display with skin="error" when result < 0', () => {
-        const driver = createDriver(<FormField label="hello" value="12345" maxLength={4}><div/></FormField>);
-        expect(driver.getCounter().innerHTML).toMatch('skin="error"'); // TODO: use Text testkit from wix-ui-backoffice
+      describe('without `label` prop', () => {
+        it('should not display counter', () => {
+          const driver = createDriver(
+            <FormField>
+              {({setLengthLeft}) => <Children onMount={() => setLengthLeft(123456)}/>}
+            </FormField>
+          );
+          expect(driver.getLengthLeft()).toEqual(null);
+        });
       });
-    });
-  });
-
-  describe('`valueLength` prop', () => {
-    it('should be used instead of `value.length` when defined', () => {
-      const driver = createDriver(<FormField label="hello" value="12345" valueLength={54327} maxLength={5}><div/></FormField>);
-      expect(driver.getCounter().innerHTML).toMatch('-54322');
     });
   });
 

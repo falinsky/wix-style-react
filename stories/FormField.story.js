@@ -10,6 +10,9 @@ const childrenExamples = [
   {label: 'Input',
     value: <Input placeholder={placeholder}/>
   },
+  {label: 'Input with char counter',
+    value: ({setLengthLeft}) => <Input placeholder={placeholder} onChange={e => setLengthLeft(100 - e.target.value.length)}/>
+  },
   {label: 'InputArea',
     value: <InputArea placeholder={placeholder}/>
   },
@@ -18,27 +21,21 @@ const childrenExamples = [
   }
 ];
 
-const isString = value => typeof value === 'string';
-
 export default {
   category: '12. Other',
   storyName: '12.6 FormField',
   component: FormField,
   componentPath: '../src/FormField',
 
-  componentProps: setState => ({
+  componentProps: {
     dataHook: 'storybook-formfield',
     children: childrenExamples[0].value,
     label: 'This is an input:',
     required: true,
-    info: 'I help you to fill info',
-    value: '',
-    onChange: e => setState({value: isString(e) ? e : e.target.value}),
-    maxLength: 100
-  }),
+    info: 'I help you to fill info'
+  },
 
   exampleProps: {
-    children: childrenExamples,
-    onChange: e => isString(e) ? e : e.target.value
+    children: childrenExamples
   }
 };
