@@ -10,7 +10,11 @@ export default {
   componentProps: {
     errorMessage: 'some error message',
     value: 20,
-    size: 'medium'
+    size: 'medium',
+    light: false,
+    error: false,
+    errorLabel: '',
+    showProgressIndication: false
   },
 
   exampleProps: {
