@@ -51,15 +51,14 @@ class FormField extends React.Component {
       children="*"
       />;
 
+  childrenRenderPropInterface = {
+    setLengthLeft: lengthLeft => this.setState({lengthLeft})
+  }
+
   renderChildren() {
     const {children} = this.props;
     if (typeof children === 'function') {
-      return children({
-        setLengthLeft: lengthLeft => {
-          this.setState({lengthLeft});
-          return lengthLeft;
-        }
-      });
+      return children(this.childrenRenderPropInterface);
     }
 
     return children;
