@@ -10,17 +10,13 @@
   width: 100%;
 }
 
-@mixin ItemMargin($margin: 12px) {
-  margin-left: $margin;
-  margin-right: $margin;
-  &:first-child {
-    margin-left:0px;
-    margin-right: $margin;
+@mixin MarginBetween($margin: 12px) {
+  &:not(:first-child) {
+    margin-left:$margin;
   }
 
-  &:last-child {
-    margin-left: $margin;
-    margin-right: 0px;
+  &:not(:last-child) {
+    margin-right: $margin;
   }
 }
 
@@ -37,10 +33,12 @@
   }
 
   .item {
-    @include ItemMargin(12px);
+    &:not(.layoutButton) {
+      @include MarginBetween(12px);
+    }
 
     &.layoutButton {
-      @include ItemMargin(0px)
+      @include MarginBetween(0px)
     }
   }
 
@@ -48,7 +46,7 @@
     display: flex;
     align-items: center;
     > * {
-      @include ItemMargin(6px);
+      @include MarginBetween(6px);
     }
   }
 }
