@@ -16,29 +16,18 @@ With tooltip:
 </Field>
 ```
 
-With char count:
+With length count:
 
-> NOTE: set `value` and `onChange` directly on `Field`.
-
-```js
-<Field
-  label="Tweet"
-  maxLength={140}
-  value={yourState.comment}
-  onChange={yourHandler}
-  >
-  <Input />
-</Field>
-```
-
-With char count, manual control:
+> NOTE: when `children` is function (a.k.a. render prop), it receives `setLengthLeft` which
+> can be called with `number`
 
 ```js
 <Field
   label="Tweet"
   maxLength={140}
-  valueLength={yourState.tweet.length}
   >
-  <RichTextArea value={yourState.tweet} onChange={yourHandler} />
+  {({setLengthLeft}) =>
+    <Input onChange={event => setLengthLeft(100 - event.target.value)}/>
+  }
 </Field>
 ```
