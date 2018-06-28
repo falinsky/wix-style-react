@@ -36,7 +36,7 @@ export const ItemGroup = props => {
 ItemGroup.displayName = 'Toolbar.ItemGroup';
 ItemGroup.propTypes = {
   children: any, // TODO: validate children are either <Item> od <Divider>
-  position: oneOf('start', 'end')
+  position: oneOf(['start', 'end'])
 };
 ItemGroup.defaultProps = {
   position: 'start'
@@ -61,7 +61,7 @@ export const Item = props => {
 Item.displayName = 'Toolbar.Item';
 Item.propTypes = {
   children: any,
-  layout: oneOf('button')
+  layout: oneOf(['button'])
 };
 
 /**
