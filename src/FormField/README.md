@@ -1,19 +1,19 @@
-# `<Field/>`
+# `<FormField/>`
 
 Generic component to help build forms.
 
 ```js
-<Field label="Your name" required>
+<FormField label="Your name" required>
   <Input value={yourState.name} onChange={yourHandler}/>
-</Field>
+</FormField>
 ```
 
 With tooltip:
 
 ```js
-<Field label="Phone number" info="Don't forget area code">
+<FormField label="Phone number" info="Don't forget area code">
   <Input value={yourState.number} onChange={yourHandler}/>
-</Field>
+</FormField>
 ```
 
 With length count:
@@ -22,12 +22,12 @@ With length count:
 > can be called with `number`
 
 ```js
-<Field
+<FormField
   label="Tweet"
   maxLength={140}
   >
   {({setLengthLeft}) =>
     <Input onChange={event => setLengthLeft(100 - event.target.value)}/>
   }
-</Field>
+</FormField>
 ```
