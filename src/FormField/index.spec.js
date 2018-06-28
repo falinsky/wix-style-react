@@ -97,7 +97,7 @@ describe('FormField', () => {
   describe('`children` prop', () => {
     class Children extends React.Component {
       componentDidMount() {
-        this.props.onMount();
+        this.props.onMount(); // eslint-disable-line react/prop-types
       }
       render() {
         return <div/>;

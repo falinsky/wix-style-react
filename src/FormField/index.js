@@ -3,39 +3,23 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import Text from 'wix-style-react/Text';
-import Tooltip from 'wix-style-react/Tooltip';
-import InfoCircle from 'wix-ui-icons-common/InfoCircle';
 
-import MaxLengthCounter from './components/max-length-counter';
+import MaxLengthCounter from './components/MaxLengthCounter';
+import InfoIcon from './components/InfoIcon';
 import styles from './styles.scss';
-
-const asterisk = () =>
-  <div
-    data-hook="formfield-asterisk"
-    className={styles.asterisk}
-    children="*"
-    />;
-
-const infoIcon = ({content} = {}) =>
-  <div
-    className={styles.infoIcon}
-    data-hook="formfield-infoicon"
-    >
-    <Tooltip
-      content={content}
-      theme="dark"
-      dataHook="formfield-infotooltip"
-      >
-      <div>
-        <InfoCircle size="24px"/>
-      </div>
-    </Tooltip>
-  </div>;
 
 class FormField extends React.Component {
   static displayName = 'FormField';
   static propTypes = {
-    /** any kids to render, should be some form of input. Input, InputArea & RichTextArea work well */
+    /**
+     * any kids to render, should be some form of input. Input, InputArea & RichTextArea work well
+     *
+     * `children` can be React node or a function
+     *
+     * when function, it receives object with:
+     * * `setLengthLeft` - function accepts a number and will display it on top right of `FormField` component
+     *
+     */
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
 
     /** optional text labeling this form field */
@@ -58,6 +42,13 @@ class FormField extends React.Component {
   state = {
     lengthLeft: undefined
   }
+
+  renderAsterisk = () =>
+    <div
+      data-hook="formfield-asterisk"
+      className={styles.asterisk}
+      children="*"
+      />;
 
   renderChildren() {
     const {children} = this.props;
@@ -89,8 +80,8 @@ class FormField extends React.Component {
           >
           <Text appearance="T1" children={label}/>
 
-          { required && asterisk() }
-          { info && infoIcon({content: info}) }
+          { required && this.renderAsterisk() }
+          { info && <InfoIcon content={info}/> }
           { lengthLeft && <MaxLengthCounter lengthLeft={lengthLeft}/> }
         </div>
       }
@@ -107,8 +98,8 @@ class FormField extends React.Component {
           data-hook="formfield-inline-suffixes"
           className={styles.suffixesInline}
           >
-          { required && asterisk() }
-          { info && infoIcon({content: info}) }
+          { required && this.renderAsterisk() }
+          { info && <InfoIcon content={info}/> }
         </div>
       }
       </div>

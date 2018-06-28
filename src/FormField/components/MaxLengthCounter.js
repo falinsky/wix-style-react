@@ -5,7 +5,7 @@ import Text from 'wix-style-react/Text';
 
 import styles from '../styles.scss';
 
-const maxLengthCounter = ({lengthLeft}) =>
+const MaxLengthCounter = ({lengthLeft}) =>
   <div
     className={styles.counter}
     data-hook="formfield-counter"
@@ -18,8 +18,8 @@ const maxLengthCounter = ({lengthLeft}) =>
       />
   </div>;
 
-maxLengthCounter.propTypes = {
+MaxLengthCounter.propTypes = {
   lengthLeft: PropTypes.number
 };
 
-export default maxLengthCounter;
+export default MaxLengthCounter;

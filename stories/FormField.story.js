@@ -11,7 +11,12 @@ const childrenExamples = [
     value: <Input placeholder={placeholder}/>
   },
   {label: 'Input with char counter',
-    value: ({setLengthLeft}) => <Input placeholder={placeholder} onChange={e => setLengthLeft(100 - e.target.value.length)}/>
+    // eslint-disable-next-line react/prop-types
+    value: ({setLengthLeft}) =>
+      <Input
+        placeholder={placeholder}
+        onChange={e => setLengthLeft(100 - e.target.value.length)}
+        />
   },
   {label: 'InputArea',
     value: <InputArea placeholder={placeholder}/>
