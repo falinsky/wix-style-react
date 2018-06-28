@@ -7,7 +7,7 @@ import {createDriverFactory, resolveIn} from '../test-common';
 import {isTestkitExists, isEnzymeTestkitExists} from '../../testkit/test-common';
 import {formFieldTestkitFactory} from '../../testkit';
 import {formFieldTestkitFactory as enzymeFormFieldTestkitFactory} from '../../testkit/enzyme';
-import formFieldDriverFactory from './driver.js';
+import formFieldDriverFactory from './FormField.driver';
 
 import FormField from './';
 
