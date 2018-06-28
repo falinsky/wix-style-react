@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import Text from 'wix-style-react/Text';
+import Label from 'wix-style-react/Label';
 
 import MaxLengthCounter from './components/MaxLengthCounter';
 import InfoIcon from './components/InfoIcon';
@@ -78,7 +78,7 @@ class FormField extends React.Component {
           className={styles.label}
           data-hook="formfield-label"
           >
-          <Text appearance="T1" children={label}/>
+          <Label appearance="T1" children={label}/>
 
           { required && this.renderAsterisk() }
           { infoContent && <InfoIcon content={infoContent}/> }

@@ -20,9 +20,9 @@ describe('FormField', () => {
   });
 
   describe('`label` prop', () => {
-    it('should be rendered with Text component', () => {
+    it('should render contents', () => {
       const driver = createDriver(<FormField label="hello label"><div/></FormField>);
-      expect(driver.getLabel().innerHTML).toMatch(/Text.*hello label/);
+      expect(driver.getLabel().innerHTML).toMatch(/hello label/);
     });
 
     it('should not render div when `label` is undefined', () => {
