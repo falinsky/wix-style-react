@@ -12,10 +12,10 @@ const childrenExamples = [
   },
   {label: 'Input with char counter',
     // eslint-disable-next-line react/prop-types
-    value: ({setLengthLeft}) =>
+    value: ({setCharactersLeft}) =>
       <Input
         placeholder={placeholder}
-        onChange={e => setLengthLeft(100 - e.target.value.length)}
+        onChange={e => setCharactersLeft(100 - e.target.value.length)}
         />
   },
   {label: 'InputArea',
@@ -37,7 +37,7 @@ export default {
     children: childrenExamples[0].value,
     label: 'This is an input:',
     required: true,
-    info: 'I help you to fill info'
+    infoContent: 'I help you to fill info'
   },
 
   exampleProps: {

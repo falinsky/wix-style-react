@@ -57,19 +57,19 @@ describe('FormField', () => {
     });
   });
 
-  describe('`info` icon with tooltip', () => {
+  describe('`infoContent` icon with tooltip', () => {
     beforeEach(() => {
       document.body.innerHTML = ''; // required for tooltip element to be removed and not to leak in consecutive tests
     });
 
     describe('given `label`', () => {
       it('should be rendered', () => {
-        const driver = createDriver(<FormField info="hello" label="hello"><div/></FormField>);
+        const driver = createDriver(<FormField infoContent="hello" label="hello"><div/></FormField>);
         expect(driver.getInfoTooltip()).not.toEqual(null);
       });
 
-      it('should display value of `info` prop in tooltip', () => {
-        const driver = createDriver(<FormField info="hello from tooltip"><div/></FormField>);
+      it('should display value of `infoContent` prop in tooltip', () => {
+        const driver = createDriver(<FormField infoContent="hello from tooltip"><div/></FormField>);
         const tooltip = driver.getInfoTooltip();
 
         tooltip.mouseEnter();
@@ -80,9 +80,9 @@ describe('FormField', () => {
       });
     });
 
-    describe('given only `info` prop', () => {
+    describe('given only `infoContent` prop', () => {
       it('should render it inline', () => {
-        const driver = createDriver(<FormField info="hey there"><div/></FormField>);
+        const driver = createDriver(<FormField infoContent="hey there"><div/></FormField>);
         const tooltip = driver.getInfoTooltip();
 
         expect(driver.isInline()).toEqual(true);
@@ -110,18 +110,18 @@ describe('FormField', () => {
     });
 
     describe('when function', () => {
-      it('should receive setLengthLeft', () => {
+      it('should receive setCharactersLeft', () => {
         const children = jest.fn();
         createDriver(<FormField children={children}/>);
-        expect(typeof children.mock.calls[0][0].setLengthLeft).toBe('function');
+        expect(typeof children.mock.calls[0][0].setCharactersLeft).toBe('function');
       });
 
       describe('with `label` prop', () => {
-        it('should display counter when `setLengthLeft` called', () => {
+        it('should display counter when `setCharactersLeft` called', () => {
           const driver = createDriver(
             <FormField label="hello">
-              {({setLengthLeft}) =>
-                <Children onMount={() => setLengthLeft(87987)}/>
+              {({setCharactersLeft}) =>
+                <Children onMount={() => setCharactersLeft(87987)}/>
               }
             </FormField>
           );
@@ -132,7 +132,7 @@ describe('FormField', () => {
         it('should display with skin="error" when result < 0', () => {
           const driver = createDriver(
             <FormField label="hello">
-              {({setLengthLeft}) => <Children onMount={() => setLengthLeft(-1)}/>}
+              {({setCharactersLeft}) => <Children onMount={() => setCharactersLeft(-1)}/>}
             </FormField>
           );
 
@@ -144,7 +144,7 @@ describe('FormField', () => {
         it('should not display counter', () => {
           const driver = createDriver(
             <FormField>
-              {({setLengthLeft}) => <Children onMount={() => setLengthLeft(123456)}/>}
+              {({setCharactersLeft}) => <Children onMount={() => setCharactersLeft(123456)}/>}
             </FormField>
           );
           expect(driver.getLengthLeft()).toEqual(null);

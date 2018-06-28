@@ -18,7 +18,7 @@ class FormField extends React.Component {
      * `children` can be React node or a function
      *
      * when function, it receives object with:
-     * * `setLengthLeft` - function accepts a number and will display it on top right of `FormField` component
+     * * `setCharactersLeft` - function accepts a number and will display it on top right of `FormField` component
      *
      */
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
@@ -30,7 +30,7 @@ class FormField extends React.Component {
     required: PropTypes.bool,
 
     /** display info icon with tooltip. Node from this prop is content of tooltip */
-    info: PropTypes.node,
+    infoContent: PropTypes.node,
 
     /** used for testing */
     dataHook: PropTypes.string
@@ -52,7 +52,7 @@ class FormField extends React.Component {
       />;
 
   childrenRenderPropInterface = {
-    setLengthLeft: lengthLeft => this.setState({lengthLeft})
+    setCharactersLeft: lengthLeft => this.setState({lengthLeft})
   }
 
   renderChildren() {
@@ -65,7 +65,7 @@ class FormField extends React.Component {
   }
 
   render() {
-    const {label, required, info, dataHook} = this.props;
+    const {label, required, infoContent, dataHook} = this.props;
     const {lengthLeft} = this.state;
 
     return (
@@ -81,25 +81,25 @@ class FormField extends React.Component {
           <Text appearance="T1" children={label}/>
 
           { required && this.renderAsterisk() }
-          { info && <InfoIcon content={info}/> }
+          { infoContent && <InfoIcon content={infoContent}/> }
           { lengthLeft && <MaxLengthCounter lengthLeft={lengthLeft}/> }
         </div>
       }
 
         <div
           data-hook="formfield-children"
-          className={classnames(styles.children, {[styles.childrenInline]: !label})}
+          className={classnames(styles.children, {[styles.childrenWithoutLabel]: !label})}
           >
           {this.renderChildren()}
         </div>
 
-        { !label && (required || info) &&
+        { !label && (required || infoContent) &&
         <div
           data-hook="formfield-inline-suffixes"
           className={styles.suffixesInline}
           >
           { required && this.renderAsterisk() }
-          { info && <InfoIcon content={info}/> }
+          { infoContent && <InfoIcon content={infoContent}/> }
         </div>
       }
       </div>
