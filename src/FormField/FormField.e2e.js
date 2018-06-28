@@ -12,18 +12,18 @@ describe('FormField', () => {
   eyes.it('should render with label', async () => {
     await autoExampleDriver.setProps({label: 'hello'});
     await waitForVisibilityOf(driver.element(), 'Cannot find FormField component');
-    expect(driver.getLabel().getText()).toMatch('hello');
+    expect(await driver.getLabel().getText()).toMatch('hello');
   });
 
   eyes.it('should render asterisk when required and no label', async () => {
     await autoExampleDriver.setProps({required: true});
     await waitForVisibilityOf(driver.element(), 'Cannot find FormField component');
-    expect(driver.getAsterisk().getText()).toEqual('*');
+    expect(await driver.getAsterisk().getText()).toEqual('*');
   });
 
   eyes.it('should render info icon when specified and no label', async () => {
     await autoExampleDriver.setProps({info: 'hello'});
     await waitForVisibilityOf(driver.element(), 'Cannot find FormField component');
-    expect(driver.getInfoIcon()).not.toBe(undefined);
+    expect(await driver.getInfoIcon()).not.toBe(undefined);
   });
 });
