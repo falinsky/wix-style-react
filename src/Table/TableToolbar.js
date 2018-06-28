@@ -1,5 +1,5 @@
 import React from 'react';
-import {string} from 'prop-types';
+import {node} from 'prop-types';
 import typography from '../Typography/Typography.scss';
 import {Toolbar, ItemGroup, Item, Label, Divider} from './Toolbar';
 export * from './Toolbar'; // eslint-disable-line no-duplicate-imports
@@ -13,7 +13,7 @@ export const Title = props => {
 };
 Title.displayName = 'TableToolbar.Title';
 Title.propTypes = {
-  children: string
+  children: node
 };
 
 export const SelectedCount = props => {
@@ -25,7 +25,7 @@ export const SelectedCount = props => {
 };
 SelectedCount.displayName = 'TableToolbar.SelectedCount';
 SelectedCount.propTypes = {
-  children: string
+  children: node
 };
 
 export const TableToolbar = Toolbar;
