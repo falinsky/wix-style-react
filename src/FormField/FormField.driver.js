@@ -1,4 +1,5 @@
 import {tooltipTestkitFactory} from '../../testkit';
+import typography from '../../Typography';
 
 const findByHook = (element, hook) =>
   element.querySelector(`[data-hook*="${hook}"]`);
@@ -6,15 +7,8 @@ const findByHook = (element, hook) =>
 const getInfoIcon = element =>
   findByHook(element, 'formfield-infoicon');
 
-const getLengthLeft = element => {
-  const counter = findByHook(element, 'formfield-counter');
-  if (counter) {
-    const count = counter.querySelector('span').innerHTML;
-    return parseInt(count, 10);
-  }
-
-  return null;
-};
+const getCharactersCounter = element =>
+  findByHook(element, 'formfield-counter');
 
 const formFieldDriver = ({element}) => ({
   exists: () => !!element,
@@ -23,11 +17,14 @@ const formFieldDriver = ({element}) => ({
   getLabel: () => findByHook(element, 'formfield-label'),
   isRequired: () => !!findByHook(element, 'formfield-asterisk'),
   isInline: () => !!findByHook(element, 'formfield-inline-suffixes'),
-  getLengthLeft: () => getLengthLeft(element),
+  getLengthLeft: () => {
+    const counter = getCharactersCounter(element);
+    return counter ? parseInt(counter.innerHTML, 10) : null;
+  },
   isLengthExceeded: () => {
-    const length = getLengthLeft(element);
-    if (length) {
-      return length < 0;
+    const counter = getCharactersCounter(element);
+    if (counter) {
+      return counter.classList.contains(typography.t3_5);
     }
     return false;
   },

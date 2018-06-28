@@ -125,7 +125,7 @@ describe('FormField', () => {
           expect(driver.getLengthLeft()).toBe(87987);
         });
 
-        it('should display with skin="error" when result < 0', () => {
+        it('should display different color when result < 0', () => {
           const driver = createDriver(
             <FormField label="hello">
               {({setCharactersLeft}) => <Children onMount={() => setCharactersLeft(-1)}/>}

@@ -4,8 +4,8 @@ import classnames from 'classnames';
 
 import Label from 'wix-style-react/Label';
 
-import MaxLengthCounter from './components/MaxLengthCounter';
 import InfoIcon from './components/InfoIcon';
+import typography from '../../Typography';
 
 import styles from './FormField.scss';
 
@@ -51,6 +51,13 @@ class FormField extends React.Component {
       children="*"
       />;
 
+  renderCharactersLeft = lengthLeft =>
+    <div
+      data-hook="formfield-counter"
+      className={classnames(styles.counter, typography.t3, {[typography.t3_5]: lengthLeft < 0})}
+      children={lengthLeft}
+      />;
+
   childrenRenderPropInterface = {
     setCharactersLeft: lengthLeft => this.setState({lengthLeft})
   }
@@ -82,7 +89,7 @@ class FormField extends React.Component {
 
           { required && this.renderAsterisk() }
           { infoContent && <InfoIcon content={infoContent}/> }
-          { lengthLeft && <MaxLengthCounter lengthLeft={lengthLeft}/> }
+          { lengthLeft && this.renderCharactersLeft(lengthLeft) }
         </div>
       }
 
