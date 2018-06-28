@@ -6,7 +6,8 @@ import Text from 'wix-style-react/Text';
 
 import MaxLengthCounter from './components/MaxLengthCounter';
 import InfoIcon from './components/InfoIcon';
-import styles from './styles.scss';
+
+import styles from './FormField.scss';
 
 class FormField extends React.Component {
   static displayName = 'FormField';

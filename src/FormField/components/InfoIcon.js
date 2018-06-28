@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Tooltip from 'wix-style-react/Tooltip';
 import InfoCircle from 'wix-ui-icons-common/InfoCircle';
 
-import styles from '../styles.scss';
+import styles from '../FormField.scss';
 
 const InfoIcon = ({content}) =>
   <div

@@ -9,36 +9,21 @@ describe('FormField', () => {
   beforeAll(() =>
     browser.get(storyUrl));
 
-  eyes.it('should render with label', () =>
-    autoExampleDriver
-      .setProps({label: 'hello'})
-      .then(() =>
-        waitForVisibilityOf(driver.element(), 'Cannot find FormField component')
-      )
-      .then(() => {
-        expect(driver.getLabel().getText()).toMatch('hello');
-      })
-    );
+  eyes.it('should render with label', async () => {
+    await autoExampleDriver.setProps({label: 'hello'});
+    await waitForVisibilityOf(driver.element(), 'Cannot find FormField component');
+    expect(driver.getLabel().getText()).toMatch('hello');
+  });
 
-  eyes.it('should render asterisk when required and no label', () =>
-    autoExampleDriver
-      .setProps({required: true})
-      .then(() =>
-        waitForVisibilityOf(driver.element(), 'Cannot find FormField component')
-      )
-      .then(() => {
-        expect(driver.getAsterisk().getText()).toEqual('*');
-      })
-    );
+  eyes.it('should render asterisk when required and no label', async () => {
+    await autoExampleDriver.setProps({required: true});
+    await waitForVisibilityOf(driver.element(), 'Cannot find FormField component');
+    expect(driver.getAsterisk().getText()).toEqual('*');
+  });
 
-  eyes.it('should render info icon when specified and no label', () =>
-    autoExampleDriver
-      .setProps({info: 'hello'})
-      .then(() =>
-        waitForVisibilityOf(driver.element(), 'Cannot find FormField component')
-      )
-      .then(() => {
-        expect(driver.getInfoIcon()).not.toBe(undefined);
-      })
-    );
+  eyes.it('should render info icon when specified and no label', async () => {
+    await autoExampleDriver.setProps({info: 'hello'});
+    await waitForVisibilityOf(driver.element(), 'Cannot find FormField component');
+    expect(driver.getInfoIcon()).not.toBe(undefined);
+  });
 });
