@@ -1,3 +1,4 @@
+import {resolveIn} from '../test-common';
 import {tooltipTestkitFactory} from '../../testkit';
 import typography from '../../Typography';
 
@@ -28,11 +29,16 @@ const formFieldDriver = ({element}) => ({
     }
     return false;
   },
-  getInfoTooltip: () =>
-    tooltipTestkitFactory({
+  getInfoContent: async () => {
+    const tooltipDriver = tooltipTestkitFactory({
       wrapper: getInfoIcon(element),
       dataHook: 'formfield-infotooltip'
-    })
+    });
+
+    tooltipDriver.mouseEnter();
+    await resolveIn(500);
+    return tooltipDriver.getContent();
+  }
 });
 
 export default formFieldDriver;

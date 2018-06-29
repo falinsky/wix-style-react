@@ -4,7 +4,7 @@ import React from 'react';
 import {mount} from 'enzyme';
 
 import Label from 'wix-style-react/Label';
-import {createDriverFactory, resolveIn} from '../test-common';
+import {createDriverFactory} from '../test-common';
 import {isTestkitExists, isEnzymeTestkitExists} from '../../testkit/test-common';
 import {formFieldTestkitFactory} from '../../testkit';
 import {formFieldTestkitFactory as enzymeFormFieldTestkitFactory} from '../../testkit/enzyme';
@@ -60,33 +60,18 @@ describe('FormField', () => {
     });
 
     describe('given `label`', () => {
-      it('should be rendered', () => {
-        const driver = createDriver(<FormField infoContent="hello" label="hello"><div/></FormField>);
-        expect(driver.getInfoTooltip()).not.toEqual(null);
-      });
-
-      it('should display value of `infoContent` prop in tooltip', () => {
+      it('should display value of `infoContent` prop in tooltip', async () => {
         const driver = createDriver(<FormField infoContent="hello from tooltip"><div/></FormField>);
-        const tooltip = driver.getInfoTooltip();
 
-        tooltip.mouseEnter();
-
-        return resolveIn(500).then(() => {
-          expect(tooltip.getContent()).toBe('hello from tooltip');
-        });
+        expect(await driver.getInfoContent()).toBe('hello from tooltip');
       });
     });
 
     describe('given only `infoContent` prop', () => {
-      it('should render it inline', () => {
+      it('should render it inline', async () => {
         const driver = createDriver(<FormField infoContent="hey there"><div/></FormField>);
-        const tooltip = driver.getInfoTooltip();
-
         expect(driver.isInline()).toEqual(true);
-        tooltip.mouseEnter();
-
-        return resolveIn(500).then(() =>
-          expect(tooltip.getContent()).toBe('hey there'));
+        expect(await driver.getInfoContent()).toBe('hey there');
       });
     });
   });
