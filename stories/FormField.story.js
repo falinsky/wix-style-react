@@ -5,10 +5,12 @@ import Input from 'wix-style-react/Input';
 import InputArea from 'wix-style-react/InputArea';
 import RichTextArea from 'wix-style-react/RichTextArea';
 
+const ID = 'formFieldId';
+
 const placeholder = 'Default text goes here...';
 const childrenExamples = [
   {label: 'Input',
-    value: <Input placeholder={placeholder}/>
+    value: <Input placeholder={placeholder} id={ID}/>
   },
   {label: 'Input with char counter',
     // eslint-disable-next-line react/prop-types
@@ -16,10 +18,11 @@ const childrenExamples = [
       <Input
         placeholder={placeholder}
         onChange={e => setCharactersLeft(100 - e.target.value.length)}
+        id={ID}
         />
   },
   {label: 'InputArea',
-    value: <InputArea placeholder={placeholder}/>
+    value: <InputArea placeholder={placeholder} id={ID}/>
   },
   {label: 'RichTextArea',
     value: <RichTextArea placeholder={placeholder}/>
@@ -37,7 +40,8 @@ export default {
     children: childrenExamples[0].value,
     label: 'This is an input:',
     required: true,
-    infoContent: 'I help you to fill info'
+    infoContent: 'I help you to fill info',
+    id: 'formFieldId'
   },
 
   exampleProps: {

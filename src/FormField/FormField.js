@@ -32,6 +32,16 @@ class FormField extends React.Component {
     /** display info icon with tooltip. Node from this prop is content of tooltip */
     infoContent: PropTypes.node,
 
+    /** string used to match text label with FormField children. For example:
+     *
+     * ```js
+     * <FormField id="myFormField" label="Hello">
+     *   <Input id="myFormField"/>
+     * </FormField>
+     * ```
+     */
+    id: PropTypes.string,
+
     /** used for testing */
     dataHook: PropTypes.string
   }
@@ -72,7 +82,7 @@ class FormField extends React.Component {
   }
 
   render() {
-    const {label, required, infoContent, dataHook} = this.props;
+    const {label, required, infoContent, dataHook, id} = this.props;
     const {lengthLeft} = this.state;
 
     return (
@@ -85,7 +95,7 @@ class FormField extends React.Component {
           className={styles.label}
           data-hook="formfield-label"
           >
-          <Label appearance="T1" children={label}/>
+          <Label appearance="T1" children={label} for={id}/>
 
           { required && this.renderAsterisk() }
           { infoContent && <InfoIcon content={infoContent}/> }

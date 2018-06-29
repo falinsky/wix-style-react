@@ -3,6 +3,7 @@
 import React from 'react';
 import {mount} from 'enzyme';
 
+import Label from 'wix-style-react/Label';
 import {createDriverFactory, resolveIn} from '../test-common';
 import {isTestkitExists, isEnzymeTestkitExists} from '../../testkit/test-common';
 import {formFieldTestkitFactory} from '../../testkit';
@@ -15,8 +16,8 @@ const createDriver = createDriverFactory(formFieldDriverFactory);
 
 describe('FormField', () => {
   it('should have correct displayName', () => {
-    const component = mount(<FormField><div/></FormField>);
-    expect(component.name()).toEqual('FormField');
+    const wrapper = mount(<FormField><div/></FormField>);
+    expect(wrapper.name()).toEqual('FormField');
   });
 
   describe('`label` prop', () => {
@@ -146,6 +147,14 @@ describe('FormField', () => {
           expect(driver.getLengthLeft()).toEqual(null);
         });
       });
+    });
+  });
+
+  describe('`id` prop', () => {
+    it('should be added to label as `htmlFor` prop', () => {
+      const wrapper = mount(<FormField id="five" label="hello"><div/></FormField>);
+      const label = wrapper.find(Label);
+      expect(label.prop('for')).toEqual('five');
     });
   });
 
