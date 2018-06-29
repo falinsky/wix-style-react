@@ -17,7 +17,6 @@ const formFieldDriver = ({element}) => ({
   getChildren: () => findByHook(element, 'formfield-children'),
   getLabel: () => findByHook(element, 'formfield-label'),
   isRequired: () => !!findByHook(element, 'formfield-asterisk'),
-  isInline: () => !!findByHook(element, 'formfield-inline-suffixes'),
   getLengthLeft: () => {
     const counter = getCharactersCounter(element);
     return counter ? parseInt(counter.innerHTML, 10) : null;

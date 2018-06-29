@@ -44,7 +44,7 @@ describe('FormField', () => {
       it('should render it inline', () => {
         const driver = createDriver(<FormField required><div/></FormField>);
         expect(driver.isRequired()).toEqual(true);
-        expect(driver.isInline()).toEqual(true);
+        expect(!!driver.element().querySelector('[data-hook="formfield-inline-suffixes"]')).toEqual(true);
       });
     });
 
@@ -70,7 +70,7 @@ describe('FormField', () => {
     describe('given only `infoContent` prop', () => {
       it('should render it inline', async () => {
         const driver = createDriver(<FormField infoContent="hey there"><div/></FormField>);
-        expect(driver.isInline()).toEqual(true);
+        expect(!!driver.element().querySelector('[data-hook="formfield-inline-suffixes"]')).toEqual(true);
         expect(await driver.getInfoContent()).toBe('hey there');
       });
     });
