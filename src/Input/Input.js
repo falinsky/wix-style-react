@@ -77,11 +77,11 @@ class Input extends Component {
       required
     } = this.props;
 
-    const onIconClicked = () => {
+    const onIconClicked = e => {
       if (!disabled) {
         this.input.focus();
         this._onFocus();
-        this.props.onInputClicked();
+        this._onClick(e);
       }
     };
 
