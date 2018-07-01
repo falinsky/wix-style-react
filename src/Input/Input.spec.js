@@ -248,6 +248,20 @@ describe('Input', () => {
       const driver = createDriver(<Input menuArrow magnifyingGlass/>);
       expect(driver.hasMenuArrow()).toBeFalsy();
     });
+
+    it('should invoke onInputClicked while click on menu arrow icon', () => {
+      const onInputClicked = jest.fn();
+      const driver = createDriver(<Input menuArrow onInputClicked={onInputClicked}/>);
+      driver.clickMenuArrow();
+      expect(onInputClicked).toBeCalled();
+    });
+
+    it('should not fail while click on menu arrow icon without passing onInputClicked', () => {
+      const driver = createDriver(<Input menuArrow/>);
+      expect(() => {
+        driver.clickMenuArrow();
+      }).not.toThrowError(/onInputClicked is not a function/);
+    });
   });
 
   describe('rtl attribute', () => {

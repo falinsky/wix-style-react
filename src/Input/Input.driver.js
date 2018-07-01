@@ -9,6 +9,7 @@ const inputDriverFactory = ({element, wrapper, component}) => {
   const suffixNode = element && element.querySelector(`.${styles.suffix}`);
   const unitNode = element && element.querySelector(`.${styles.unit}`);
   const magnifyingGlassNode = element && element.querySelector(`.${styles.magnifyingGlass}`);
+  const menuArrowNode = element && element.querySelector(`.${styles.menuArrow}`);
 
   const driver = {
     trigger: (trigger, event) => ReactTestUtils.Simulate[trigger](input, event),
@@ -26,6 +27,7 @@ const inputDriverFactory = ({element, wrapper, component}) => {
     clickClear: () => ReactTestUtils.Simulate.click(clearButton),
     clickUnit: () => ReactTestUtils.Simulate.click(unitNode),
     clickMagnifyingGlass: () => ReactTestUtils.Simulate.click(magnifyingGlassNode),
+    clickMenuArrow: () => ReactTestUtils.Simulate.click(menuArrowNode),
     mouseOver: () => ReactTestUtils.Simulate.mouseOver(input),
     mouseOut: () => ReactTestUtils.Simulate.mouseOut(input),
     clearText: () => driver.enterText(''),
@@ -60,7 +62,7 @@ const inputDriverFactory = ({element, wrapper, component}) => {
     getDataHook: () => element.getAttribute('data-hook'),
     getUnit: () => unitNode.textContent,
     hasMagnifyingGlass: () => !!magnifyingGlassNode,
-    hasMenuArrow: () => !!element.querySelector(`.${styles.menuArrow}`),
+    hasMenuArrow: () => !!menuArrowNode,
     hasClearButton: () => !!clearButton,
     isRTL: () => element.className.indexOf(styles.rtl) >= 0,
     isFocusedStyle: () => element.classList.contains(styles.hasFocus),
