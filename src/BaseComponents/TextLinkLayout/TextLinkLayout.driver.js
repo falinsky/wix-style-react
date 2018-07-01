@@ -18,7 +18,8 @@ const textLinkLayoutDriverFactory = ({element, wrapper, component}) => {
     setProps: props => {
       const ClonedWithProps = React.cloneElement(component, Object.assign({}, component.props, props), ...(component.props.children || []));
       ReactDOM.render(<div ref={r => element = r}>{ClonedWithProps}</div>, wrapper);
-    }
+    },
+    getColor: () => element.style._values.color
   };
 };
 

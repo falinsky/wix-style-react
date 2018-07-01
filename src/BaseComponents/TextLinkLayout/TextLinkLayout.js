@@ -75,7 +75,7 @@ export default class TextLinkLayout extends WixComponent {
   render() {
     const {isHover} = this.state;
     const {underlineStyle, size, children, display, disabled} = this.props;
-    const color = this.getColor();
+    const color = this.props.color || this.getColor();
 
     const style = {
       color,

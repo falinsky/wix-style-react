@@ -80,6 +80,21 @@ describe('TextLinkLayout', () => {
     const driver = createDriver(<TextLinkLayout display="inline-block"/>);
     expect(driver.getDisplay()).toBe('inline-block');
   });
+
+  describe('custom color', () => {
+    const colorToPass = '#FF0000';
+    const colorToCheck = 'rgb(255, 0, 0)';
+
+    it('should be with default theme', () => {
+      const driver = createDriver(<TextLinkLayout color={colorToPass}/>);
+      expect(driver.getColor()).toBe(colorToCheck);
+    });
+
+    it('should be with custom theme', () => {
+      const driver = createDriver(<TextLinkLayout color={colorToPass} theme="greyScale"/>);
+      expect(driver.getColor()).toBe(colorToCheck);
+    });
+  });
 });
 
 describe('testkit', () => {
