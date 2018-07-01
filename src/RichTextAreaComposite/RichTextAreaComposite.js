@@ -4,7 +4,7 @@ import RichTextArea from '../RichTextArea';
 import Label from '../Label';
 import InputAreaWithLabelComposite from '../Composite/InputAreaWithLabelComposite/InputAreaWithLabelComposite';
 
-const RichTextAreaComposite = ({children, ...props}) => (
+const RichTextAreaComposite = ({...props, children}) => (
   <InputAreaWithLabelComposite {...props}>
     {children}
   </InputAreaWithLabelComposite>

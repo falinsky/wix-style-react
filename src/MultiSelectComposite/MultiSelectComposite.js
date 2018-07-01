@@ -5,7 +5,7 @@ import Label from '../Label';
 import MultiSelect from '../MultiSelect';
 import InputAreaWithLabelComposite from '../Composite/InputAreaWithLabelComposite/InputAreaWithLabelComposite';
 
-const MultiSelectComposite = ({children, ...props}) => (
+const MultiSelectComposite = ({...props, children}) => (
   <InputAreaWithLabelComposite {...props}>
     {children}
   </InputAreaWithLabelComposite>

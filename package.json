@@ -1,7 +1,7 @@
 {
   "name": "wix-style-react",
   "description": "wix-style-react",
-  "version": "4.5.1",
+  "version": "4.5.3",
   "main": "./dist/src/index.js",
   "files": [
     "dist",
@@ -11,9 +11,6 @@
     "testkit",
     "*.js"
   ],
-  "bin": {
-    "migrate-to-icons-v2": "./scripts/migrate-to-icons-v2/runner.js"
-  },
   "scripts": {
     "start": "./scripts/npm-start.sh",
     "pretest": "npm run lint && ./scripts/ensure-dist.sh",
@@ -25,12 +22,10 @@
     "test:e2e-only": "NODE_ENV=production yoshi test --protractor",
     "build": "npm run lint && svg2react-icon && yoshi build && build-storybook && npm run export-components",
     "pr-postbuild": "npx teamcity-surge-autorelease@^1.0.0 --dist=storybook-static",
-    "postinstall": "npm run proxy-wix-ui-icons",
     "storybook": "start-storybook -p 6006",
     "postpublish": "npx teamcity-surge-autorelease@^1.0.0 --dist=storybook-static",
     "export-components": "import-path --path src",
-    "lint": "yoshi lint",
-    "proxy-wix-ui-icons": "node scripts/proxy-wix-ui-icons"
+    "lint": "yoshi lint"
   },
   "yoshi": {
     "features": {
@@ -112,7 +107,6 @@
     "hoist-non-react-methods": "^1.1.0",
     "is-image": "^1.0.1",
     "is-url": "^1.2.2",
-    "jscodeshift": "^0.5.0",
     "lodash": "^4.17.4",
     "moment": "2.19.2",
     "omit": "^1.0.1",
@@ -130,7 +124,7 @@
     "slate": "^0.20.3",
     "wix-animations": "^1.0.141",
     "wix-ui-backoffice": "1.0.271",
-    "wix-ui-icons-common": "2.0.2",
+    "wix-ui-icons-common": "1.0.39",
     "wix-ui-test-utils": "^1.0.0"
   },
   "jest": {

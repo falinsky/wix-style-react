@@ -13,6 +13,7 @@
 | isLarge  | -         | boolean        | true when using the large loader         |
 | isMedium | -         | boolean        | true when using the medium loader        |
 | isSmall  | -         | boolean        | true when using the small loader         |
+| isTiny   | -         | boolean        | true when using the tiny loader          |
 | setProps | object    | element        | returns a clone of this element with the new props from the json |
 
 ## Loader Protractor TestKit API
@@ -27,6 +28,7 @@
 | isLarge  | -         | boolean        | true when using the large loader         |
 | isMedium | -         | boolean        | true when using the medium loader        |
 | isSmall  | -         | boolean        | true when using the small loader         |
+| isTiny   | -         | boolean        | true when using the tiny loader          |
 
 ## Usage Example
 

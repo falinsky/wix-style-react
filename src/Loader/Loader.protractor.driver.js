@@ -15,6 +15,7 @@ const loaderDriverFactory = component => {
 
   return {
     element: () => component,
+    isTiny: () => hasClass(component, css, 'tiny'),
     isSmall: () => hasClass(component, css, 'small'),
     isMedium: () => hasClass(component, css, 'medium'),
     isLarge: () => hasClass(component, css, 'large'),

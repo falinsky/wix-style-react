@@ -19,6 +19,7 @@ const loaderDriverFactory = ({element, wrapper}) => {
     isLarge: () => isClassExists(element, 'large'),
     isMedium: () => isClassExists(element, 'medium'),
     isSmall: () => isClassExists(element, 'small'),
+    isTiny: () => isClassExists(element, 'tiny'),
     setProps: props => {
       ReactDOM.render(<div ref={r => element = r}><Loader {...props}/></div>, wrapper);
     }

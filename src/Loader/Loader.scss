@@ -48,6 +48,19 @@
     margin-top: 18px;
   }
 
+  &.tiny {
+    .arcsContainer {
+
+      .lightArc {
+        animation: rotation 2s linear infinite;
+      }
+
+      .darkArc {
+        animation: rotation 666ms linear infinite;
+      }
+    }
+  }
+
   &.small {
     .arcsContainer {
 

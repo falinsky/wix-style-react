@@ -14,6 +14,9 @@ Types of changes:
 
 ## next
 
+## Added
+- `<Loader/>` - Add tiny size [#1911](https://github.com/wix/wix-style-react/pull/1911)
+
 ## 4.5.0 - 2018-07-01
 ### Changed
 - `<DatePicker/>` - allow passing custom locale to DatePicker [#1684](https://github.com/wix/wix-style-react/pull/1684)

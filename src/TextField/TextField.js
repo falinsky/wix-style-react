@@ -4,7 +4,7 @@ import Label from '../Label';
 import Input from '../Input';
 import InputAreaWithLabelComposite from '../Composite/InputAreaWithLabelComposite/InputAreaWithLabelComposite';
 
-const TextField = ({children, ...props}) => (
+const TextField = ({...props, children}) => (
   <InputAreaWithLabelComposite {...props}>
     {children}
   </InputAreaWithLabelComposite>

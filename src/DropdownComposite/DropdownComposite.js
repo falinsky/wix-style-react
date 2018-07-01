@@ -5,7 +5,7 @@ import Label from '../Label';
 import Dropdown from '../Dropdown';
 import InputAreaWithLabelComposite from '../Composite/InputAreaWithLabelComposite/InputAreaWithLabelComposite';
 
-const DropdownComposite = ({children, ...props}) => (
+const DropdownComposite = ({...props, children}) => (
   <InputAreaWithLabelComposite {...props}>
     {children}
   </InputAreaWithLabelComposite>

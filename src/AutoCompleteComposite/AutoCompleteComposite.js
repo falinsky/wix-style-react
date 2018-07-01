@@ -4,7 +4,7 @@ import Label from '../Label';
 import AutoComplete from '../AutoComplete';
 import InputAreaWithLabelComposite from '../Composite/InputAreaWithLabelComposite/InputAreaWithLabelComposite';
 
-const AutoCompleteComposite = ({children, ...props}) => (
+const AutoCompleteComposite = ({...props, children}) => (
   <InputAreaWithLabelComposite {...props}>
     {children}
   </InputAreaWithLabelComposite>
