@@ -38,7 +38,6 @@ const inputDriverFactory = ({element, wrapper, component}) => {
     getAutocomplete: () => input.getAttribute('autocomplete'),
     getRequired: () => input.required,
     getType: () => input.type,
-    getWidth: () => input.style.width,
     hasPrefix: () => element.querySelectorAll(`.${styles.prefix}`).length === 1,
     hasPrefixClass: () => element.querySelectorAll(`.${styles.input}.${styles.withPrefix}`).length === 1,
     hasSuffix: () => !!suffixNode,

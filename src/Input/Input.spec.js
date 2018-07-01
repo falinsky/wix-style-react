@@ -583,11 +583,6 @@ describe('Input', () => {
     });
   });
 
-  it('should set `width`', () => {
-    const driver = createDriver(<Input width={120}/>);
-    expect(driver.getWidth()).toBe('120px');
-  });
-
   describe('className prop', () => {
     it('should set className on root element', () => {
       const className = 'foo';
