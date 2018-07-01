@@ -206,6 +206,20 @@ describe('Input', () => {
       const driver = createDriver(<Input magnifyingGlass error/>);
       expect(driver.hasMagnifyingGlass()).toBeFalsy();
     });
+
+    it('should invoke onInputClicked while click on magnifying glass icon', () => {
+      const onInputClicked = jest.fn();
+      const driver = createDriver(<Input magnifyingGlass onInputClicked={onInputClicked}/>);
+      driver.clickMagnifyingGlass();
+      expect(onInputClicked).toBeCalled();
+    });
+
+    it('should not fail while click on magnifying glass icon without passing onInputClicked', () => {
+      const driver = createDriver(<Input magnifyingGlass/>);
+      expect(() => {
+        driver.clickMagnifyingGlass();
+      }).not.toThrowError(/onInputClicked is not a function/);
+    });
   });
 
   describe('menuArrow attribute', () => {

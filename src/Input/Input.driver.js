@@ -8,6 +8,7 @@ const inputDriverFactory = ({element, wrapper, component}) => {
   const clearButton = element && element.querySelector(`.${styles.clearButton}`);
   const suffixNode = element && element.querySelector(`.${styles.suffix}`);
   const unitNode = element && element.querySelector(`.${styles.unit}`);
+  const magnifyingGlassNode = element && element.querySelector(`.${styles.magnifyingGlass}`);
 
   const driver = {
     trigger: (trigger, event) => ReactTestUtils.Simulate[trigger](input, event),
@@ -24,6 +25,7 @@ const inputDriverFactory = ({element, wrapper, component}) => {
     clickSuffix: () => ReactTestUtils.Simulate.click(suffixNode),
     clickClear: () => ReactTestUtils.Simulate.click(clearButton),
     clickUnit: () => ReactTestUtils.Simulate.click(unitNode),
+    clickMagnifyingGlass: () => ReactTestUtils.Simulate.click(magnifyingGlassNode),
     mouseOver: () => ReactTestUtils.Simulate.mouseOver(input),
     mouseOut: () => ReactTestUtils.Simulate.mouseOut(input),
     clearText: () => driver.enterText(''),
@@ -57,7 +59,7 @@ const inputDriverFactory = ({element, wrapper, component}) => {
     getTooltipDataHook: () => 'input-tooltip',
     getDataHook: () => element.getAttribute('data-hook'),
     getUnit: () => unitNode.textContent,
-    hasMagnifyingGlass: () => !!element.querySelector(`.${styles.magnifyingGlass}`),
+    hasMagnifyingGlass: () => !!magnifyingGlassNode,
     hasMenuArrow: () => !!element.querySelector(`.${styles.menuArrow}`),
     hasClearButton: () => !!clearButton,
     isRTL: () => element.className.indexOf(styles.rtl) >= 0,
